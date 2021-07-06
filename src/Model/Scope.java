@@ -47,8 +47,10 @@ public class Scope extends Node {
     }
 
 
-
-
+    /**
+     *
+     * @param parentScope
+     */
     public void constructDirectEdge(Scope parentScope){
         //connect this with new scope with DirectEdge(childrenScope -> parentScope)
         DirectEdge directEdge = new DirectEdge(this, parentScope);
