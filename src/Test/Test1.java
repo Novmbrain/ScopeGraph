@@ -28,6 +28,8 @@ public class Test1 {
         System.out.println(namea7.getReferenceEdge().getEnd().getDirectEdge().getEnd());
         //
 
+        
+
 //        //construct  scope1 and all node that scope1 points to
 //        Scope scope1 = new Scope(1);
 //        Name nameB4 = scope1.constructDeclaration("B", 4);
