@@ -7,6 +7,8 @@ import Model.Scope;
 import javax.swing.*;
 
 /**
+ * A reference constraint specifies that reference belongs to scope
+ * Graphically : O <- []
  * @author Wenjie FU
  * @create 2021-06-30 14:20
  */

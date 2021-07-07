@@ -13,17 +13,10 @@ public class Name extends Node{
 
     private String variableName;
     private int variableId;
-    private List<DeclarationEdge> declarationEdges;
-    private List<ReferenceEdge> referenceEdges;
-    private List<AssociationEdge> associationEdges;
-    private List<NominalEdge> nominalEdges;
-
-    {
-        declarationEdges = new ArrayList<>();
-        referenceEdges = new ArrayList<>();
-        associationEdges = new ArrayList<>();
-        nominalEdges = new ArrayList<>();
-    }
+    private DeclarationEdge declarationEdge;
+    private ReferenceEdge referenceEdge;
+    private AssociationEdge associationEdge;
+    private NominalEdge nominalEdge;
 
 
     public Name() {
@@ -34,44 +27,65 @@ public class Name extends Node{
         this.variableId = variableId;
     }
 
-    public String getVariableName() {
-        return variableName;
-    }
-
     public void constructAssociation(Scope scope) {
         //connect scope with node using referenceEdge(name -> scope)
-        AssociationEdge associationEdge = new AssociationEdge(this, scope);
-        associationEdges.add(associationEdge);
-        scope.getAssociationEdges().add(associationEdge);
-
+        associationEdge = new AssociationEdge(this, scope);
+        scope.setAssociationEdge(associationEdge);
     }
 
     public void constructReference(Scope scope) {
         //connect scope with node using referenceEdge(name -> scope)
-        ReferenceEdge referenceEdge = new ReferenceEdge(this, scope);
-        referenceEdges.add(referenceEdge);
+        referenceEdge = new ReferenceEdge(this, scope);
         scope.getReferenceEdges().add(referenceEdge);
 
+    }
+
+    public String getVariableName() {
+        return variableName;
+    }
+
+    public void setVariableName(String variableName) {
+        this.variableName = variableName;
     }
 
     public int getVariableId() {
         return variableId;
     }
 
-    public List<DeclarationEdge> getDeclarationEdges() {
-        return declarationEdges;
+    public void setVariableId(int variableId) {
+        this.variableId = variableId;
     }
 
-    public List<ReferenceEdge> getReferenceEdges() {
-        return referenceEdges;
+    public DeclarationEdge getDeclarationEdge() {
+        return declarationEdge;
     }
 
-    public List<AssociationEdge> getAssociationEdges() {
-        return associationEdges;
+    public void setDeclarationEdge(DeclarationEdge declarationEdge) {
+        this.declarationEdge = declarationEdge;
     }
 
-    public List<NominalEdge> getNominalEdges() {
-        return nominalEdges;
+    public ReferenceEdge getReferenceEdge() {
+        return referenceEdge;
+    }
+
+    public void setReferenceEdge(ReferenceEdge referenceEdge) {
+        this.referenceEdge = referenceEdge;
+    }
+
+    public AssociationEdge getAssociationEdge() {
+        return associationEdge;
+    }
+
+    public void setAssociationEdge(AssociationEdge associationEdge) {
+        this.associationEdge = associationEdge;
+    }
+
+    public NominalEdge getNominalEdge() {
+        return nominalEdge;
+    }
+
+    public void setNominalEdge(NominalEdge nominalEdge) {
+        this.nominalEdge = nominalEdge;
     }
 
     @Override

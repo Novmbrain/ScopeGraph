@@ -5,8 +5,11 @@ import Model.Node;
 import Model.Scope;
 
 /**
+ * A declaration constraint specifies that declaration belongs to scope
+ * Graphically : O -> []
  * @author Wenjie FU
  * @create 2021-06-30 14:20
+ *
  */
 public class DeclarationEdge extends Edge{
 

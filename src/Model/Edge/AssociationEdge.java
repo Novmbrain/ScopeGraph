@@ -5,6 +5,9 @@ import Model.Node;
 import Model.Scope;
 
 /**
+ * An association constraint specifies s as the associated scope of declaration. Associated scopes
+ * can be used to connect the declaration of a collection of names to the scope declaring those names(e.g. the body of a module)
+ * Graphically : [] -> O
  * @author Wenjie FU
  * @create 2021-06-30 14:20
  */

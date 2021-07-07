@@ -5,11 +5,13 @@ import Model.Node;
 import Model.Scope;
 
 /**
+ * A nominal edge constraint specifies a nominal l-labeled edge from scope s to reference.
+ * Such an edge makes visible in s all declarations that are visible in the associated scope of the declaration.
+ * Graphically : O -> []
  * @author Wenjie FU
  * @create 2021-06-30 14:21
  */
 public class NominalEdge extends TaggedEdge{
-    private String tag;
     private Scope start;
     private Name end;
 

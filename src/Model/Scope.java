@@ -14,23 +14,19 @@ public class Scope extends Node {
     private int scopeId;
     private List<DeclarationEdge> declarationEdges;
     private List<ReferenceEdge> referenceEdges;
-    private List<AssociationEdge> associationEdges;
-    private List<DirectEdge> directEdges;
+    private AssociationEdge associationEdge;
+    private DirectEdge directEdge;
     private List<NominalEdge> nominalEdges;
 
 
-    {
+    public Scope() {
         declarationEdges = new ArrayList<>();
         referenceEdges = new ArrayList<>();
-        associationEdges = new ArrayList<>();
-        directEdges = new ArrayList<>();
         nominalEdges = new ArrayList<>();
     }
 
-    public Scope() {
-    }
-
     public Scope(int scopeId) {
+        this();
         this.scopeId = scopeId;
     }
 
@@ -41,7 +37,7 @@ public class Scope extends Node {
         //connect scope with node using declarationEdge(scope -> name)
         DeclarationEdge declarationEdge = new DeclarationEdge(this, name);
         declarationEdges.add(declarationEdge);
-        name.getDeclarationEdges().add(declarationEdge);
+        name.setDeclarationEdge(declarationEdge);
 
         return name;
     }
@@ -53,9 +49,8 @@ public class Scope extends Node {
      */
     public void constructDirectEdge(Scope parentScope){
         //connect this with new scope with DirectEdge(childrenScope -> parentScope)
-        DirectEdge directEdge = new DirectEdge(this, parentScope);
-        directEdges.add(directEdge);
-        parentScope.getDirectEdges().add(directEdge);
+        directEdge = new DirectEdge(this, parentScope);
+        parentScope.setDirectEdge(directEdge);
 
     }
 
@@ -66,7 +61,7 @@ public class Scope extends Node {
         //connect scope with node using nominalEdge(scope -> name)
         NominalEdge nominalEdge = new NominalEdge(this, name);
         nominalEdges.add(nominalEdge);
-        name.getNominalEdges().add(nominalEdge);
+        name.setNominalEdge(nominalEdge);
 
         return name;
     }
@@ -75,20 +70,48 @@ public class Scope extends Node {
         return scopeId;
     }
 
+    public void setScopeId(int scopeId) {
+        this.scopeId = scopeId;
+    }
+
     public List<DeclarationEdge> getDeclarationEdges() {
         return declarationEdges;
+    }
+
+    public void setDeclarationEdges(List<DeclarationEdge> declarationEdges) {
+        this.declarationEdges = declarationEdges;
     }
 
     public List<ReferenceEdge> getReferenceEdges() {
         return referenceEdges;
     }
 
-    public List<AssociationEdge> getAssociationEdges() {
-        return associationEdges;
+    public void setReferenceEdges(List<ReferenceEdge> referenceEdges) {
+        this.referenceEdges = referenceEdges;
     }
 
-    public List<DirectEdge> getDirectEdges() {
-        return directEdges;
+    public AssociationEdge getAssociationEdge() {
+        return associationEdge;
+    }
+
+    public void setAssociationEdge(AssociationEdge associationEdge) {
+        this.associationEdge = associationEdge;
+    }
+
+    public DirectEdge getDirectEdge() {
+        return directEdge;
+    }
+
+    public void setDirectEdge(DirectEdge directEdge) {
+        this.directEdge = directEdge;
+    }
+
+    public List<NominalEdge> getNominalEdges() {
+        return nominalEdges;
+    }
+
+    public void setNominalEdges(List<NominalEdge> nominalEdges) {
+        this.nominalEdges = nominalEdges;
     }
 
     @Override

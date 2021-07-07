@@ -3,12 +3,13 @@ package Model.Edge;
 import Model.Node;
 import Model.Scope;
 
-/*** @author Wenjie FU
+/***
+ * A direct edge constraint specifies a direct l-labeled edge from scope s1 to scope s2
+ * Graphically : O -> O
+ * @author Wenjie FU
  * @create 2021-06-30 14:20
  */
 public class DirectEdge extends TaggedEdge{
-
-    private String tag = "P";
     private Scope start;
     private Scope end;
 
@@ -23,9 +24,6 @@ public class DirectEdge extends TaggedEdge{
         this.end = end;
     }
 
-    public String getTag() {
-        return tag;
-    }
 
     public Scope getStart() {
         return start;
@@ -35,12 +33,5 @@ public class DirectEdge extends TaggedEdge{
         return end;
     }
 
-    @Override
-    public String toString() {
-        return "DirectEdge{" +
-                "tag='" + tag + '\'' +
-                ", start=" + start +
-                ", end=" + end +
-                '}';
-    }
+
 }
