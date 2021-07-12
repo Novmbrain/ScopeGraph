@@ -1,6 +1,6 @@
-package Model;
+package model;
 
-import Model.Edge.*;
+import model.edge.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +19,7 @@ public class Scope extends Node {
     private List<NominalEdge> nominalEdges;
 
 
-    public Scope() {
+    private Scope() {
         declarationEdges = new ArrayList<>();
         referenceEdges = new ArrayList<>();
         nominalEdges = new ArrayList<>();
@@ -30,7 +30,7 @@ public class Scope extends Node {
         this.scopeId = scopeId;
     }
 
-    public Name constructDeclaration(String variableName, int variableId){
+    protected Name constructDeclaration(String variableName, int variableId){
         //construct new node
         Name name = new Name(variableName, variableId);
 
@@ -47,14 +47,13 @@ public class Scope extends Node {
      *
      * @param parentScope
      */
-    public void constructDirectEdge(Scope parentScope){
+    protected void constructDirectEdge(Scope parentScope){
         //connect this with new scope with DirectEdge(childrenScope -> parentScope)
         directEdge = new DirectEdge(this, parentScope);
-        parentScope.setDirectEdge(directEdge);
 
     }
 
-    public Name constructNominalEdge(String variableName, int variableId) {
+    protected Name constructNominalEdge(String variableName, int variableId) {
         //construct new node
         Name name = new Name(variableName, variableId);
 

@@ -1,6 +1,4 @@
-package Model.Edge;
-
-import Model.Node;
+package model.edge;
 
 /**
  * @author Wenjie FU

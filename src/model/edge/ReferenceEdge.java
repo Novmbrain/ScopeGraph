@@ -1,10 +1,7 @@
-package Model.Edge;
+package model.edge;
 
-import Model.Name;
-import Model.Node;
-import Model.Scope;
-
-import javax.swing.*;
+import model.Name;
+import model.Scope;
 
 /**
  * A reference constraint specifies that reference belongs to scope

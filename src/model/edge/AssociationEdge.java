@@ -1,8 +1,7 @@
-package Model.Edge;
+package model.edge;
 
-import Model.Name;
-import Model.Node;
-import Model.Scope;
+import model.Name;
+import model.Scope;
 
 /**
  * An association constraint specifies s as the associated scope of declaration. Associated scopes
@@ -22,5 +21,13 @@ public class AssociationEdge extends Edge{
     public AssociationEdge(Name start, Scope end) {
         this.start = start;
         this.end = end;
+    }
+
+    public Name getStart() {
+        return start;
+    }
+
+    public Scope getEnd() {
+        return end;
     }
 }

@@ -1,9 +1,4 @@
-package Model;
-
-import Model.Edge.Edge;
-
-import java.util.ArrayList;
-import java.util.Objects;
+package model;
 
 /**
  * @author Wenjie FU

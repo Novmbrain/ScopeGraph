@@ -1,8 +1,7 @@
-package Model.Edge;
+package model.edge;
 
-import Model.Name;
-import Model.Node;
-import Model.Scope;
+import model.Name;
+import model.Scope;
 
 /**
  * A nominal edge constraint specifies a nominal l-labeled edge from scope s to reference.
@@ -24,5 +23,13 @@ public class NominalEdge extends TaggedEdge{
         super(tag);
         this.start = start;
         this.end = end;
+    }
+
+    public Scope getStart() {
+        return start;
+    }
+
+    public Name getEnd() {
+        return end;
     }
 }

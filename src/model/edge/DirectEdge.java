@@ -1,7 +1,6 @@
-package Model.Edge;
+package model.edge;
 
-import Model.Node;
-import Model.Scope;
+import model.Scope;
 
 /***
  * A direct edge constraint specifies a direct l-labeled edge from scope s1 to scope s2

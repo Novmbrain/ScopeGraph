@@ -1,7 +1,11 @@
-package Model;
+package model;
+
+import model.edge.*;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * @author Wenjie FU
@@ -11,10 +15,13 @@ public class ScopeGraph {
 
     private ArrayList<Name> nameList;
     private HashMap<Integer, Scope> scopeMap;
+    private Resolver resolver;
 
     public ScopeGraph() {
         nameList = new ArrayList<>();
         scopeMap = new HashMap<>();
+        resolver = new Resolver(nameList, scopeMap);
+
     }
 
 
@@ -23,7 +30,7 @@ public class ScopeGraph {
      * existing ScopeId. Scopeid starts at 1
      * @param amount
      */
-    public void  GenerateScope(int amount){
+    public void  generateScope(int amount){
         if(amount <= 0) return;
 
         int size = scopeMap.size();
@@ -125,6 +132,8 @@ public class ScopeGraph {
         return name;
     }
 
+
+
     private boolean outOfScopeId(int scopeId){
         if(scopeId > scopeMap.size() || scopeId <= 0 || scopeMap.isEmpty()){
             return true;
@@ -134,11 +143,69 @@ public class ScopeGraph {
 
     }
 
-    @Override
-    public String toString() {
-        return "ScopeGraph{" +
-                "nameList=" + nameList +
-                "\n scopeMap=" + scopeMap +
-                '}';
+    private String printScope(Scope scope) {
+
+        int scopeId = scope.getScopeId();
+        List<DeclarationEdge> declarationEdges = scope.getDeclarationEdges();
+        List<ReferenceEdge> referenceEdges = scope.getReferenceEdges();
+        AssociationEdge associationEdge = scope.getAssociationEdge();
+        DirectEdge directEdge = scope.getDirectEdge();
+        List<NominalEdge> nominalEdges = scope.getNominalEdges();
+
+
+        StringBuilder stringBuilder = new StringBuilder();
+
+        stringBuilder.append("Scope" + scopeId + " :\n\n");
+
+        if (!declarationEdges.isEmpty()) {
+            for (DeclarationEdge declarationEdge : declarationEdges) {
+                stringBuilder.append("Declaration : ---> " + declarationEdge.getEnd() + "\n");
+            }
+        }
+
+        if (!referenceEdges.isEmpty()) {
+            for (ReferenceEdge referenceEdge : referenceEdges) {
+                stringBuilder.append("Reference : <--- " + referenceEdge.getStart() + "\n");
+            }
+        }
+
+        if (associationEdge != null) {
+            stringBuilder.append("Association : <--- " + associationEdge.getStart() + "\n");
+        }
+
+
+        if (directEdge != null) {
+            stringBuilder.append("DirectEdge : ---> " + directEdge.getEnd() + "\n");
+        }
+
+
+        if (!nominalEdges.isEmpty()) {
+            for (NominalEdge nominalEdge : nominalEdges) {
+                stringBuilder.append("NominalEdge : ---> " + nominalEdge.getEnd());
+            }
+        }
+
+        return stringBuilder.toString();
+    }
+
+    public void printScopeGraph() {
+        Collection<Scope> scopeList = scopeMap.values();
+
+        for (Scope scope : scopeList) {
+            System.out.println(printScope(scope));
+        }
+
+    }
+
+    public ArrayList<Name> getNameList() {
+        return nameList;
+    }
+
+    public HashMap<Integer, Scope> getScopeMap() {
+        return scopeMap;
+    }
+
+    public Resolver getResolver() {
+        return resolver;
     }
 }

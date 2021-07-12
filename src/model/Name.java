@@ -1,9 +1,8 @@
-package Model;
+package model;
 
-import Model.Edge.*;
+import model.edge.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Wenjie FU
@@ -19,21 +18,18 @@ public class Name extends Node{
     private NominalEdge nominalEdge;
 
 
-    public Name() {
-    }
-
     public Name(String variableName, int variableId) {
         this.variableName = variableName;
         this.variableId = variableId;
     }
 
-    public void constructAssociation(Scope scope) {
+    protected void constructAssociation(Scope scope) {
         //connect scope with node using referenceEdge(name -> scope)
         associationEdge = new AssociationEdge(this, scope);
         scope.setAssociationEdge(associationEdge);
     }
 
-    public void constructReference(Scope scope) {
+    protected void constructReference(Scope scope) {
         //connect scope with node using referenceEdge(name -> scope)
         referenceEdge = new ReferenceEdge(this, scope);
         scope.getReferenceEdges().add(referenceEdge);
@@ -94,5 +90,18 @@ public class Name extends Node{
                 "variableName='" + variableName + '\'' +
                 ", variableId=" + variableId +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Name name = (Name) o;
+        return Objects.equals(variableName, name.variableName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(variableName);
     }
 }

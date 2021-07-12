@@ -1,8 +1,7 @@
-package Model.Edge;
+package model.edge;
 
-import Model.Name;
-import Model.Node;
-import Model.Scope;
+import model.Name;
+import model.Scope;
 
 /**
  * A declaration constraint specifies that declaration belongs to scope
@@ -22,5 +21,13 @@ public class DeclarationEdge extends Edge{
     public DeclarationEdge(Scope start, Name end) {
         this.start = start;
         this.end = end;
+    }
+
+    public Scope getStart() {
+        return start;
+    }
+
+    public Name getEnd() {
+        return end;
     }
 }
