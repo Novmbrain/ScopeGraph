@@ -1,0 +1,10 @@
+1. 查找多条路径，包括找不到的path(ok)
+2. 将查找代码object化(ok)
+3. 测试错误的例子
+4. interface pour SearchResult
+5. 给测试加上commentaire
+
+----------------------------
+6. Graphviz / DOT
+7. fusioner les scopes
+8. rapport(decision, le reste, )

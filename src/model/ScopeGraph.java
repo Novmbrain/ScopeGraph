@@ -15,12 +15,10 @@ public class ScopeGraph {
 
     private ArrayList<Name> nameList;
     private HashMap<Integer, Scope> scopeMap;
-    private Resolver resolver;
 
     public ScopeGraph() {
         nameList = new ArrayList<>();
         scopeMap = new HashMap<>();
-        resolver = new Resolver(nameList, scopeMap);
 
     }
 
@@ -197,15 +195,40 @@ public class ScopeGraph {
 
     }
 
-    public ArrayList<Name> getNameList() {
-        return nameList;
+    public SearchResult checkReference(Name reference) {
+
+        SearchResult searchResult = new SearchResult();
+        searchResult.addNodeToPath(reference);
+
+        //get scope
+        if(reference.getReferenceEdge() != null){
+            //search all declaration in scope
+            Scope scope =reference.getReferenceEdge().getEnd();
+            scope.checkReference(reference, searchResult);
+
+        }
+
+        return searchResult;
     }
 
-    public HashMap<Integer, Scope> getScopeMap() {
-        return scopeMap;
+    public SearchResult checkImportModule(Name module) {
+
+        SearchResult searchResult = new SearchResult();
+
+        if(module.getReferenceEdge() != null){
+            Scope scope = module.getReferenceEdge().getEnd();
+
+            if(scope == null) return searchResult;
+
+            searchResult.addNodeToPath(module);
+            searchResult.addNodeToPath(scope);
+
+            scope.checkImportModule(module, searchResult);
+        }
+
+
+        return searchResult;
+
     }
 
-    public Resolver getResolver() {
-        return resolver;
-    }
 }

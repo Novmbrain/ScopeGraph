@@ -36,25 +36,14 @@ public class Name extends Node{
 
     }
 
-    public String getVariableName() {
-        return variableName;
+    protected boolean haveAssociationEdge(){
+        if (associationEdge == null) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
-    public void setVariableName(String variableName) {
-        this.variableName = variableName;
-    }
-
-    public int getVariableId() {
-        return variableId;
-    }
-
-    public void setVariableId(int variableId) {
-        this.variableId = variableId;
-    }
-
-    public DeclarationEdge getDeclarationEdge() {
-        return declarationEdge;
-    }
 
     public void setDeclarationEdge(DeclarationEdge declarationEdge) {
         this.declarationEdge = declarationEdge;
@@ -64,20 +53,8 @@ public class Name extends Node{
         return referenceEdge;
     }
 
-    public void setReferenceEdge(ReferenceEdge referenceEdge) {
-        this.referenceEdge = referenceEdge;
-    }
-
     public AssociationEdge getAssociationEdge() {
         return associationEdge;
-    }
-
-    public void setAssociationEdge(AssociationEdge associationEdge) {
-        this.associationEdge = associationEdge;
-    }
-
-    public NominalEdge getNominalEdge() {
-        return nominalEdge;
     }
 
     public void setNominalEdge(NominalEdge nominalEdge) {

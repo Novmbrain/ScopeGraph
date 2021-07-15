@@ -8,43 +8,52 @@ import java.util.List;
  * @create 2021-07-12 17:17
  */
 public class SearchResult {
-    private boolean result;
-    private List<Node> path;
+    private boolean curResult;
+//    private List<Boolean> allResult;
+
+    private List<Node> curPath;
+    private List<List<Node>> allPath;
 
     public SearchResult() {
-        path = new ArrayList<>();
+//        allResult = new ArrayList<>();
+        curPath = new ArrayList<>();
+        allPath = new ArrayList<>();
     }
 
     public SearchResult(boolean result, List<Node> path) {
-        this.result = result;
-        this.path = path;
+        this.curResult = result;
+        this.curPath = path;
     }
 
-    public void addPath(Node node) {
-        path.add(node);
+    public void addNodeToPath(Node node) {
+        curPath.add(node);
     }
 
-    public void removeLastPath() {
-        path.remove(path.size() - 1);
+    public void removeLastNodeInPath() {
+        curPath.remove(curPath.size() - 1);
     }
 
-    public void setResult(boolean result) {
-        this.result = result;
+    public void addCurrentPath(){
+        allPath.add(new ArrayList<Node>(curPath));
+//        allResult.add(true);
     }
 
-    public boolean isResult() {
-        return result;
+    public void setCurResult(boolean curResult) {
+        this.curResult = curResult;
+    }
+
+    public boolean isCurResult() {
+        return curResult;
     }
 
     public List<Node> getPath() {
-        return path;
+        return curPath;
     }
 
     @Override
     public String toString() {
         return "SearchResult{" +
-                "result=" + result +
-                ", path=" + path +
+                "allPath=" + allPath +
                 '}';
     }
 }
