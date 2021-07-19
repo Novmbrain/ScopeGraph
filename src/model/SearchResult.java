@@ -8,52 +8,39 @@ import java.util.List;
  * @create 2021-07-12 17:17
  */
 public class SearchResult {
-    private boolean curResult;
-//    private List<Boolean> allResult;
 
-    private List<Node> curPath;
-    private List<List<Node>> allPath;
+    private PathImpl<Node> curPathImpl;
+    private List<PathImpl> allPathImpl;
 
     public SearchResult() {
-//        allResult = new ArrayList<>();
-        curPath = new ArrayList<>();
-        allPath = new ArrayList<>();
-    }
-
-    public SearchResult(boolean result, List<Node> path) {
-        this.curResult = result;
-        this.curPath = path;
-    }
-
-    public void addNodeToPath(Node node) {
-        curPath.add(node);
-    }
-
-    public void removeLastNodeInPath() {
-        curPath.remove(curPath.size() - 1);
+        curPathImpl = new PathImpl<>();
+        allPathImpl = new ArrayList<>();
     }
 
     public void addCurrentPath(){
-        allPath.add(new ArrayList<Node>(curPath));
-//        allResult.add(true);
+        allPathImpl.add(new PathImpl<Node>(curPathImpl.getPath()));
     }
 
-    public void setCurResult(boolean curResult) {
-        this.curResult = curResult;
+    public int pathNumber() {
+        return allPathImpl.size();
     }
 
-    public boolean isCurResult() {
-        return curResult;
+    public List<PathImpl> getAllPath() {
+        return allPathImpl;
     }
 
-    public List<Node> getPath() {
-        return curPath;
+    public void addNodeToCurrentPath(Node node) {
+        curPathImpl.addNodeToPath(node);
+    }
+
+    public void removeLastNodeFromCurrentPath(){
+        curPathImpl.removeLastNodeFromPath();
     }
 
     @Override
     public String toString() {
         return "SearchResult{" +
-                "allPath=" + allPath +
+                "allPath=" + allPathImpl +
                 '}';
     }
 }

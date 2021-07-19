@@ -186,6 +186,63 @@ public class ScopeGraph {
         return stringBuilder.toString();
     }
 
+    private String printDot(Scope scope) {
+
+        int scopeId = scope.getScopeId();
+        List<DeclarationEdge> declarationEdges = scope.getDeclarationEdges();
+        List<ReferenceEdge> referenceEdges = scope.getReferenceEdges();
+        AssociationEdge associationEdge = scope.getAssociationEdge();
+        DirectEdge directEdge = scope.getDirectEdge();
+        List<NominalEdge> nominalEdges = scope.getNominalEdges();
+
+
+        StringBuilder stringBuilder = new StringBuilder();
+
+
+        if (!declarationEdges.isEmpty()) {
+            for (DeclarationEdge declarationEdge : declarationEdges) {
+                stringBuilder.append(scopeId + "->" + declarationEdge.getEnd() + "\n");
+            }
+        }
+
+        if (!referenceEdges.isEmpty()) {
+            for (ReferenceEdge referenceEdge : referenceEdges) {
+                stringBuilder.append(referenceEdge.getStart() + "->" + scopeId + "\n");
+            }
+        }
+
+        if (associationEdge != null) {
+            stringBuilder.append( associationEdge.getStart() + "->" +  scopeId + " " + "[arrowhead=empty]" + "\n");
+        }
+
+
+        if (directEdge != null) {
+            stringBuilder.append(scopeId + "->" + directEdge.getEnd() + "[color = blue, label = P]" + "\n");
+        }
+
+
+        if (!nominalEdges.isEmpty()) {
+            for (NominalEdge nominalEdge : nominalEdges) {
+                stringBuilder.append( scopeId + "-> " + nominalEdge.getEnd() + " " + "[arrowhead=empty]" + "\n");
+            }
+        }
+
+        return stringBuilder.toString();
+    }
+
+    public void printDotForScopeGraph() {
+        for (Name name : nameList) {
+            System.out.println(name + " " + "[shape = box]");
+        }
+
+        Collection<Scope> scopeList = scopeMap.values();
+
+        for (Scope scope : scopeList) {
+            System.out.println(printDot(scope));
+        }
+
+    }
+
     public void printScopeGraph() {
         Collection<Scope> scopeList = scopeMap.values();
 
@@ -198,7 +255,7 @@ public class ScopeGraph {
     public SearchResult checkReference(Name reference) {
 
         SearchResult searchResult = new SearchResult();
-        searchResult.addNodeToPath(reference);
+        searchResult.addNodeToCurrentPath(reference);
 
         //get scope
         if(reference.getReferenceEdge() != null){
@@ -220,8 +277,7 @@ public class ScopeGraph {
 
             if(scope == null) return searchResult;
 
-            searchResult.addNodeToPath(module);
-            searchResult.addNodeToPath(scope);
+            searchResult.addNodeToCurrentPath(module);
 
             scope.checkImportModule(module, searchResult);
         }

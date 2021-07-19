@@ -63,10 +63,7 @@ public class Name extends Node{
 
     @Override
     public String toString() {
-        return "Name{" +
-                "variableName='" + variableName + '\'' +
-                ", variableId=" + variableId +
-                '}';
+        return variableName + "" + variableId;
     }
 
     @Override

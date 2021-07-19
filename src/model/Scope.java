@@ -67,63 +67,55 @@ public class Scope extends Node {
     //搜索结束
     protected void checkReference(Name reference, SearchResult searchResult){
 
-        searchResult.addNodeToPath(this);
+        searchResult.addNodeToCurrentPath(this);
 
         //search all declaration in scope
         for (DeclarationEdge declarationEdge : this.getDeclarationEdges()) {
 
             Name declaration = declarationEdge.getEnd();
 
-            searchResult.addNodeToPath(declaration);
+            searchResult.addNodeToCurrentPath(declaration);
             //first check this declaration is not a module
             if (!declaration.haveAssociationEdge()) {
                 if (reference.equals(declaration)) {
-                    searchResult.setCurResult(true);
                     searchResult.addCurrentPath();
-                    searchResult.setCurResult(false);
                 }
             }
 
-            searchResult.removeLastNodeInPath();
+            searchResult.removeLastNodeFromCurrentPath();
         }
 
         //search all import module in scope
         for (NominalEdge nominalEdge : this.getNominalEdges()) {
             Name importModule = nominalEdge.getEnd();
 
-            //backtrack begin
-            searchResult.addNodeToPath(importModule);
+            searchResult.addNodeToCurrentPath(importModule);//backtrack1 begin
 
+            //first check if the reference of this module has its declaration
             SearchResult moduleSearchResult = new SearchResult();
             checkImportModule(importModule, moduleSearchResult);
+            //It's possible that a reference of a module has multiple declarations
+            if (moduleSearchResult.pathNumber() != 0) {
+                List<PathImpl> pathImpls = moduleSearchResult.getAllPath();
+                for (PathImpl pathImpl : pathImpls) {
+                    //the last node in the path is the declaration of this module
+                    Name module = (Name) pathImpl.getLastNode();
+                    Scope end = module.getAssociationEdge().getEnd();
 
-            if (moduleSearchResult.isCurResult()) {
-                //to find the last component in moduleSearchResult's path
-                List<Node> path = moduleSearchResult.getPath();
-                Name module = (Name) path.get(path.size() - 1);
-                Scope end = module.getAssociationEdge().getEnd();
+                    searchResult.addNodeToCurrentPath(module);//backtrack2 begin
 
-                searchResult.addNodeToPath(module);
-                end.checkReference(reference, searchResult);
-                if(searchResult.isCurResult()){
-                    searchResult.addCurrentPath();
-                    searchResult.setCurResult(false);
-                    return;
+                    end.checkReference(reference, searchResult);
+
+                    searchResult.removeLastNodeFromCurrentPath();//backtrack2 end
                 }
-                searchResult.removeLastNodeInPath();
-
             }
-
-            searchResult.removeLastNodeInPath();
-            //backtrack end
-
+            searchResult.removeLastNodeFromCurrentPath();//backtrack1 end
         }
 
         //use recursion to search node in parentScope
         DirectEdge directEdge = this.getDirectEdge();
-        //to check current scope have a parentScope
+        //to check if current scope have a parentScope
         if (directEdge != null) {
-
             Scope parentScope = directEdge.getEnd();
             if (parentScope != null) {
                 parentScope.checkReference(reference, searchResult);
@@ -132,9 +124,13 @@ public class Scope extends Node {
 
     }
 
+    /**
+     * For now, it only works: find a declaration and end the search
+     * @param module
+     * @param searchResult
+     */
     protected void checkImportModule(Name module, SearchResult searchResult){
-
-        searchResult.addNodeToPath(this);
+        searchResult.addNodeToCurrentPath(this);
 
         for (DeclarationEdge declarationEdge : this.getDeclarationEdges()) {
             Name declaration = declarationEdge.getEnd();
@@ -142,9 +138,9 @@ public class Scope extends Node {
             //first check this declaration is a module
             if (declaration.haveAssociationEdge()) {
                 if(module.equals(declaration)){
-                    searchResult.addNodeToPath(declaration);
-                    searchResult.setCurResult(true);
-                    return;
+                    searchResult.addNodeToCurrentPath(declaration);
+                    searchResult.addCurrentPath();
+                    searchResult.removeLastNodeFromCurrentPath();
                 }
             }
         }
@@ -188,8 +184,6 @@ public class Scope extends Node {
 
     @Override
     public String toString() {
-        return "Scope{" +
-                "scopeId=" + scopeId +
-                '}';
+        return "" + scopeId;
     }
 }
