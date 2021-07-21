@@ -1,7 +1,7 @@
 package model.edge;
 
-import model.Name;
-import model.Scope;
+import model.scope.Name;
+import model.scope.Scope;
 
 /**
  * A declaration constraint specifies that declaration belongs to scope
@@ -29,5 +29,12 @@ public class DeclarationEdge extends Edge{
 
     public Name getEnd() {
         return end;
+    }
+
+    @Override
+    public String toString() {
+
+        return start + "->" + end + "\n";
+
     }
 }

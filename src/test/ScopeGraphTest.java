@@ -1,7 +1,7 @@
 package test;
 
-import model.Name;
-import model.ScopeGraph;
+import model.scope.Name;
+import model.scope.ScopeGraph;
 import org.junit.Test;
 
 /**

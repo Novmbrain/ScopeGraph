@@ -1,7 +1,7 @@
 package model.edge;
 
-import model.Name;
-import model.Scope;
+import model.scope.Name;
+import model.scope.Scope;
 
 /**
  * An association constraint specifies s as the associated scope of declaration. Associated scopes
@@ -29,5 +29,10 @@ public class AssociationEdge extends Edge{
 
     public Scope getEnd() {
         return end;
+    }
+
+    @Override
+    public String toString() {
+        return start + "->" + end + " " + "[arrowhead=empty]" + "\n";
     }
 }

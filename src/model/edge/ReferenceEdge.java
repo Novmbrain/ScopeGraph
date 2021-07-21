@@ -1,7 +1,7 @@
 package model.edge;
 
-import model.Name;
-import model.Scope;
+import model.scope.Name;
+import model.scope.Scope;
 
 /**
  * A reference constraint specifies that reference belongs to scope
@@ -32,9 +32,6 @@ public class ReferenceEdge extends Edge{
 
     @Override
     public String toString() {
-        return "ReferenceEdge{" +
-                "start=" + start +
-                ", end=" + end +
-                '}';
+        return start + "->" + end + "\n";
     }
 }

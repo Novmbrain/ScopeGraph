@@ -1,4 +1,4 @@
-package model;
+package model.scope;
 
 import model.edge.*;
 

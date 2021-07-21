@@ -1,8 +1,7 @@
 package test;
 
-import model.Name;
-import model.Scope;
-import model.ScopeGraph;
+import model.scope.Name;
+import model.scope.ScopeGraph;
 
 /**
  * @author Wenjie FU

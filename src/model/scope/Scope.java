@@ -1,6 +1,7 @@
-package model;
+package model.scope;
 
 import model.edge.*;
+import model.searchresult.PathImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -96,7 +97,7 @@ public class Scope extends Node {
             checkImportModule(importModule, moduleSearchResult);
             //It's possible that a reference of a module has multiple declarations
             if (moduleSearchResult.pathNumber() != 0) {
-                List<PathImpl> pathImpls = moduleSearchResult.getAllPath();
+                List<PathImpl<Node>> pathImpls = moduleSearchResult.getAllPath();
                 for (PathImpl pathImpl : pathImpls) {
                     //the last node in the path is the declaration of this module
                     Name module = (Name) pathImpl.getLastNode();
@@ -153,11 +154,6 @@ public class Scope extends Node {
 
     }
 
-    public int getScopeId() {
-        return scopeId;
-    }
-
-
     public List<DeclarationEdge> getDeclarationEdges() {
         return declarationEdges;
     }
@@ -180,6 +176,32 @@ public class Scope extends Node {
 
     public List<NominalEdge> getNominalEdges() {
         return nominalEdges;
+    }
+
+    public String printDot() {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        for (DeclarationEdge declarationEdge : declarationEdges) {
+            stringBuilder.append(declarationEdge);
+        }
+
+        for (ReferenceEdge referenceEdge : referenceEdges) {
+            stringBuilder.append(referenceEdge);
+        }
+
+        stringBuilder.append(associationEdge);
+
+        stringBuilder.append(directEdge);
+
+        for (NominalEdge nominalEdge : nominalEdges) {
+            stringBuilder.append(nominalEdge);
+        }
+        
+        return stringBuilder.toString();
+    }
+
+    public int getScopeId() {
+        return scopeId;
     }
 
     @Override

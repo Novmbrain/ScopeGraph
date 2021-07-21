@@ -1,8 +1,5 @@
-package model;
+package model.searchresult;
 
-import sun.awt.image.ImageWatched;
-
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -10,7 +7,7 @@ import java.util.List;
  * @author Wenjie FU
  * @create 2021-07-19 9:22
  */
-public class PathImpl<E> implements Path<E>{
+public class PathImpl<E> implements Path<E> {
 
     private List<E> path;
 
@@ -22,7 +19,6 @@ public class PathImpl<E> implements Path<E>{
         this();
         this.path = new LinkedList<E>(path);
     }
-
 
     @Override
     public List<E> getPath() {

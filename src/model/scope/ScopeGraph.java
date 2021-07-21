@@ -1,10 +1,6 @@
-package model;
+package model.scope;
 
-import model.edge.*;
-
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * @author Wenjie FU
@@ -20,7 +16,6 @@ public class ScopeGraph {
         scopeMap = new HashMap<>();
 
     }
-
 
     /**
      * Scope is automatically generated according to the number of inputs, and ScopeId is incremented on the basis of
@@ -129,8 +124,6 @@ public class ScopeGraph {
         return name;
     }
 
-
-
     private boolean outOfScopeId(int scopeId){
         if(scopeId > scopeMap.size() || scopeId <= 0 || scopeMap.isEmpty()){
             return true;
@@ -138,93 +131,6 @@ public class ScopeGraph {
             return false;
         }
 
-    }
-
-    private String printScope(Scope scope) {
-
-        int scopeId = scope.getScopeId();
-        List<DeclarationEdge> declarationEdges = scope.getDeclarationEdges();
-        List<ReferenceEdge> referenceEdges = scope.getReferenceEdges();
-        AssociationEdge associationEdge = scope.getAssociationEdge();
-        DirectEdge directEdge = scope.getDirectEdge();
-        List<NominalEdge> nominalEdges = scope.getNominalEdges();
-
-        StringBuilder stringBuilder = new StringBuilder();
-
-        stringBuilder.append("Scope" + scopeId + " :\n\n");
-
-        if (!declarationEdges.isEmpty()) {
-            for (DeclarationEdge declarationEdge : declarationEdges) {
-                stringBuilder.append("Declaration : ---> " + declarationEdge.getEnd() + "\n");
-            }
-        }
-
-        if (!referenceEdges.isEmpty()) {
-            for (ReferenceEdge referenceEdge : referenceEdges) {
-                stringBuilder.append("Reference : <--- " + referenceEdge.getStart() + "\n");
-            }
-        }
-
-        if (associationEdge != null) {
-            stringBuilder.append("Association : <--- " + associationEdge.getStart() + "\n");
-        }
-
-
-        if (directEdge != null) {
-            stringBuilder.append("DirectEdge : ---> " + directEdge.getEnd() + "\n");
-        }
-
-
-        if (!nominalEdges.isEmpty()) {
-            for (NominalEdge nominalEdge : nominalEdges) {
-                stringBuilder.append("NominalEdge : ---> " + nominalEdge.getEnd());
-            }
-        }
-
-        return stringBuilder.toString();
-    }
-
-    private String printDot(Scope scope) {
-
-        int scopeId = scope.getScopeId();
-        List<DeclarationEdge> declarationEdges = scope.getDeclarationEdges();
-        List<ReferenceEdge> referenceEdges = scope.getReferenceEdges();
-        AssociationEdge associationEdge = scope.getAssociationEdge();
-        DirectEdge directEdge = scope.getDirectEdge();
-        List<NominalEdge> nominalEdges = scope.getNominalEdges();
-
-
-        StringBuilder stringBuilder = new StringBuilder();
-
-        if (!declarationEdges.isEmpty()) {
-            for (DeclarationEdge declarationEdge : declarationEdges) {
-                stringBuilder.append(scopeId + "->" + declarationEdge.getEnd() + "\n");
-            }
-        }
-
-        if (!referenceEdges.isEmpty()) {
-            for (ReferenceEdge referenceEdge : referenceEdges) {
-                stringBuilder.append(referenceEdge.getStart() + "->" + scopeId + "\n");
-            }
-        }
-
-        if (associationEdge != null) {
-            stringBuilder.append( associationEdge.getStart() + "->" +  scopeId + " " + "[arrowhead=empty]" + "\n");
-        }
-
-
-        if (directEdge != null) {
-            stringBuilder.append(scopeId + "->" + directEdge.getEnd() + "[color=blue, label=P]" + "\n");
-        }
-
-
-        if (!nominalEdges.isEmpty()) {
-            for (NominalEdge nominalEdge : nominalEdges) {
-                stringBuilder.append( scopeId + "-> " + nominalEdge.getEnd() + " " + "[arrowhead=empty, label=I, color=red]" + "\n");
-            }
-        }
-
-        return stringBuilder.toString();
     }
 
     public void printDotForScopeGraph() {
@@ -235,19 +141,10 @@ public class ScopeGraph {
         }
 
         for (Scope scope : scopeMap.values()) {
-            System.out.println(printDot(scope));
+            System.out.println(scope.printDot());
         }
 
         System.out.println("}");
-
-    }
-
-    public void printScopeGraph() {
-        Collection<Scope> scopeList = scopeMap.values();
-
-        for (Scope scope : scopeList) {
-            System.out.println(printScope(scope));
-        }
 
     }
 

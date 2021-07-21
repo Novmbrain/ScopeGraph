@@ -1,6 +1,6 @@
 package model.edge;
 
-import model.Scope;
+import model.scope.Scope;
 
 /***
  * A direct edge constraint specifies a direct l-labeled edge from scope s1 to scope s2
@@ -32,5 +32,8 @@ public class DirectEdge extends TaggedEdge{
         return end;
     }
 
-
+    @Override
+    public String toString() {
+        return start + "->" + end + "[color=blue, label=P]" + "\n";
+    }
 }

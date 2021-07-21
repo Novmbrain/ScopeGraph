@@ -1,7 +1,7 @@
 package model.edge;
 
-import model.Name;
-import model.Scope;
+import model.scope.Name;
+import model.scope.Scope;
 
 /**
  * A nominal edge constraint specifies a nominal l-labeled edge from scope s to reference.
@@ -31,5 +31,10 @@ public class NominalEdge extends TaggedEdge{
 
     public Name getEnd() {
         return end;
+    }
+
+    @Override
+    public String toString() {
+        return start + "-> " + end + " " + "[arrowhead=empty, label=I, color=red]" + "\n";
     }
 }

@@ -1,4 +1,6 @@
-package model;
+package model.scope;
+
+import model.searchresult.PathImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +12,7 @@ import java.util.List;
 public class SearchResult {
 
     private PathImpl<Node> curPathImpl;
-    private List<PathImpl> allPathImpl;
+    private List<PathImpl<Node>> allPathImpl;
 
     public SearchResult() {
         curPathImpl = new PathImpl<>();
@@ -25,7 +27,7 @@ public class SearchResult {
         return allPathImpl.size();
     }
 
-    public List<PathImpl> getAllPath() {
+    public List<PathImpl<Node>> getAllPath() {
         return allPathImpl;
     }
 
