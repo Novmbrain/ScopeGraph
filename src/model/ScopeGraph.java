@@ -2,7 +2,6 @@ package model;
 
 import model.edge.*;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -13,11 +12,11 @@ import java.util.List;
  */
 public class ScopeGraph {
 
-    private ArrayList<Name> nameList;
+    private HashMap<String, Name> nameMap;
     private HashMap<Integer, Scope> scopeMap;
 
     public ScopeGraph() {
-        nameList = new ArrayList<>();
+        nameMap = new HashMap<>();
         scopeMap = new HashMap<>();
 
     }
@@ -51,7 +50,7 @@ public class ScopeGraph {
 
         Scope scope = scopeMap.get(scopeId);
         Name name = scope.constructDeclaration(variableName, variableId);
-        nameList.add(name);
+        nameMap.put(name.toString(),  name);
 
         return name;
     }
@@ -84,7 +83,7 @@ public class ScopeGraph {
         Name name = scope.constructNominalEdge(variableName, variableId);
         name.constructReference(scope);
 
-        nameList.add(name);
+        nameMap.put(name.toString(), name);
         return name;
     }
 
@@ -103,7 +102,7 @@ public class ScopeGraph {
         Scope assotiationScope = scopeMap.get(associationScopeId);
 
         Name name = declarationScope.constructDeclaration(variableName, variableId);
-        nameList.add(name);
+        nameMap.put(name.toString(), name);
 
         name.constructAssociation(assotiationScope);
 
@@ -123,7 +122,7 @@ public class ScopeGraph {
         Scope scope = scopeMap.get(scopeId);
 
         Name name = new Name(variableName, variableId);
-        nameList.add(name);
+        nameMap.put(name.toString(), name);
 
         name.constructReference(scope);
 
@@ -149,7 +148,6 @@ public class ScopeGraph {
         AssociationEdge associationEdge = scope.getAssociationEdge();
         DirectEdge directEdge = scope.getDirectEdge();
         List<NominalEdge> nominalEdges = scope.getNominalEdges();
-
 
         StringBuilder stringBuilder = new StringBuilder();
 
@@ -198,7 +196,6 @@ public class ScopeGraph {
 
         StringBuilder stringBuilder = new StringBuilder();
 
-
         if (!declarationEdges.isEmpty()) {
             for (DeclarationEdge declarationEdge : declarationEdges) {
                 stringBuilder.append(scopeId + "->" + declarationEdge.getEnd() + "\n");
@@ -217,13 +214,13 @@ public class ScopeGraph {
 
 
         if (directEdge != null) {
-            stringBuilder.append(scopeId + "->" + directEdge.getEnd() + "[color = blue, label = P]" + "\n");
+            stringBuilder.append(scopeId + "->" + directEdge.getEnd() + "[color=blue, label=P]" + "\n");
         }
 
 
         if (!nominalEdges.isEmpty()) {
             for (NominalEdge nominalEdge : nominalEdges) {
-                stringBuilder.append( scopeId + "-> " + nominalEdge.getEnd() + " " + "[arrowhead=empty]" + "\n");
+                stringBuilder.append( scopeId + "-> " + nominalEdge.getEnd() + " " + "[arrowhead=empty, label=I, color=red]" + "\n");
             }
         }
 
@@ -231,15 +228,17 @@ public class ScopeGraph {
     }
 
     public void printDotForScopeGraph() {
-        for (Name name : nameList) {
+        System.out.println("digraph first{\n rankdir=BT \n");
+
+        for (Name name : nameMap.values()) {
             System.out.println(name + " " + "[shape = box]");
         }
 
-        Collection<Scope> scopeList = scopeMap.values();
-
-        for (Scope scope : scopeList) {
+        for (Scope scope : scopeMap.values()) {
             System.out.println(printDot(scope));
         }
+
+        System.out.println("}");
 
     }
 
@@ -282,9 +281,17 @@ public class ScopeGraph {
             scope.checkImportModule(module, searchResult);
         }
 
-
         return searchResult;
 
     }
+
+    public Name getName(String name) {
+        if (name != null && name.length() > 0) {
+            return nameMap.get(name);
+        }
+
+        return null;
+    }
+
 
 }

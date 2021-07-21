@@ -12,44 +12,29 @@ import org.junit.Test;
  */
 public class ScopeGraphTest {
     /**
-     * Test Scope Graph: The Scope Graph for the test is Figure2 in the article
      * Test purpose: Find Declaration X1 from Reference X4
-     * Test Result: Sucess
      */
     @Test
-    public void scopeGraph1(){
-        ScopeGraph scopeGraph = new ScopeGraph();
-        scopeGraph.generateScope(1);
+    public void Test0(){
 
-        Name referencex4 = scopeGraph.makeReference(1, "x", 4);
-        scopeGraph.makeReference(1, "x", 8);
-
-        scopeGraph.makeDeclaration(1, "x", 1);
-        scopeGraph.makeDeclaration(1, "y", 3);
+        ScopeGraph scopeGraph = ScopeGraphCreater.ScopeGraphFirgure2();
 
         scopeGraph.printDotForScopeGraph();
+
+        Name referencex4 = scopeGraph.getName("x4");
 
         System.out.println(scopeGraph.checkReference(referencex4));
     }
 
 
     /**
-     * Test Scope Graph: The Scope Graph for the test is on the left of Figure3 in the article
      * Test purpose: Find Declaration f3 from Reference f6. Test if the algorithm recurses correctly
-     * Test Result: Sucess
      */
     @Test
-    public void scopeGraph2(){
-        ScopeGraph scopeGraph = new ScopeGraph();
-        scopeGraph.generateScope(2);
+    public void Test1(){
+        ScopeGraph scopeGraph = ScopeGraphCreater.ScopeGrapFirgure3Left();
 
-        Name referencef6 = scopeGraph.makeReference(2, "f", 6);
-        scopeGraph.makeReference(2, "n", 7);
-        scopeGraph.makeDeclaration(2, "n", 4);
-        scopeGraph.makeDirectEdge(2, 1);
-
-        scopeGraph.makeDeclaration(1, "f", 3);
-        scopeGraph.makeDeclaration(1, "n", 1);
+        Name referencef6 = scopeGraph.getName("f6");
 
         scopeGraph.printDotForScopeGraph();
 
@@ -57,54 +42,26 @@ public class ScopeGraphTest {
     }
 
     /**
-     * Test Scope Graph: The Scope Graph for the test is on the left of Figure3 in the article
      * Test purpose: Find Declaration n4 and n1 from Reference n7. Test whether the algorithm can find multiple possible paths
-     * Test Result: Sucess
      */
     @Test
-    public void scopeGraph3(){
-        ScopeGraph scopeGraph = new ScopeGraph();
-        scopeGraph.generateScope(2);
+    public void Test2(){
+        ScopeGraph scopeGraph = ScopeGraphCreater.ScopeGrapFirgure3Left();
 
-        scopeGraph.makeReference(2, "f", 6);
-        Name referencen7 = scopeGraph.makeReference(2, "n", 7);
-        scopeGraph.makeDeclaration(2, "n", 4);
-        scopeGraph.makeDirectEdge(2, 1);
+        Name referencen7 = scopeGraph.getName("n7");
 
-        scopeGraph.makeDeclaration(1, "f", 3);
-        scopeGraph.makeDeclaration(1, "n", 1);
-
-        scopeGraph.printScopeGraph();
-
-        scopeGraph.printScopeGraph();
+        scopeGraph.printDotForScopeGraph();
 
         System.out.println(scopeGraph.checkReference(referencen7));
     }
 
     /**
-     * Test Scope Graph: The Scope Graph for the test is on the right of Figure3 in the article
      * Test purpose: Find Declaration a2 from Reference a7. Test whether the corresponding declaration can be found in the Import Module
-     * Test Result: Sucess
      */
     @Test
-    public void scopeGraph4() {
-
-        //Construct a Scope Graph
-        ScopeGraph scopeGraph = new ScopeGraph();
-        scopeGraph.generateScope(3);
-
-        scopeGraph.makeAssociation(1, "B", 4, 3);
-        scopeGraph.makeAssociation(1, "A", 1, 2);
-
-        scopeGraph.makeDirectEdge(3, 1);
-        scopeGraph.makeDirectEdge(2, 1);
-
-        scopeGraph.makeDeclaration(3, "b", 6);
-        Name referencea7 = scopeGraph.makeReference(3, "a", 7);
-
-        scopeGraph.makeNominalEdge(3, "A", 5);
-
-        scopeGraph.makeDeclaration(2, "a", 2);
+    public void Test3() {
+        ScopeGraph scopeGraph = ScopeGraphCreater.ScopeGraphFirgure3Right();
+        Name referencea7 = scopeGraph.getName("a7");
 
         scopeGraph.printDotForScopeGraph();
 
@@ -113,31 +70,13 @@ public class ScopeGraphTest {
     }
 
     /**
-     * Test Scope Graph: The Scope Graph for the test is on the right of Figure3 in the article
      * Test purpose: Test when the reference corresponding declaration does not exist
-     * Test Result: can't find the declaration
      */
     @Test
-    public void scopeGraph5() {
+    public void Test4() {
+        ScopeGraph scopeGraph = ScopeGraphCreater.ScopeGraphFirgure3Right();
 
-        //Construct a Scope Graph
-        ScopeGraph scopeGraph = new ScopeGraph();
-        scopeGraph.generateScope(3);
-
-        scopeGraph.makeAssociation(1, "B", 4, 3);
-        scopeGraph.makeAssociation(1, "A", 1, 2);
-
-        scopeGraph.makeDirectEdge(3, 1);
-        scopeGraph.makeDirectEdge(2, 1);
-
-        scopeGraph.makeDeclaration(3, "b", 6);
-        scopeGraph.makeReference(3, "a", 7);
-
-        scopeGraph.makeNominalEdge(3, "A", 5);
-
-        scopeGraph.makeDeclaration(2, "a", 2);
-
-        scopeGraph.printScopeGraph();
+        scopeGraph.printDotForScopeGraph();
 
         Name testName = new Name("j", 111);
 
@@ -145,62 +84,32 @@ public class ScopeGraphTest {
 
     }
     /**
-     * Test Scope Graph: The Scope Graph for the test is on the right of Figure3 in the article
      * Test purpose: Find Declaration A1 from ImportModule A5.
-     * Test Result:
      */
     @Test
-    public void scopeGraph6() {
+    public void Test5() {
+        ScopeGraph scopeGraph = ScopeGraphCreater.ScopeGraphFirgure3Right();
 
-        //Construct a Scope Graph
-        ScopeGraph scopeGraph = new ScopeGraph();
-        scopeGraph.generateScope(3);
+        Name moduleA5 = scopeGraph.getName("A5");
 
-        scopeGraph.makeAssociation(1, "B", 4, 3);
-        scopeGraph.makeAssociation(1, "A", 1, 2);
-
-        scopeGraph.makeDirectEdge(3, 1);
-        scopeGraph.makeDirectEdge(2, 1);
-
-        scopeGraph.makeDeclaration(3, "b", 6);
-        scopeGraph.makeReference(3, "a", 7);
-
-        Name moduleA5 = scopeGraph.makeNominalEdge(3, "A", 5);
-
-        scopeGraph.makeDeclaration(2, "a", 2);
-
-        scopeGraph.printScopeGraph();
+        scopeGraph.printDotForScopeGraph();
 
         System.out.println(scopeGraph.checkImportModule(moduleA5));
 
     }
 
     /**
-     * Test Scope Graph: A new Scope Graph
-     * Test purpose: Find Declaration A1 from ImportModule A5 and A4. Test when the reference corresponding multiple declaration
+
+     * Test purpose: Find Reference A5 from Declaration A1 and A4. Test when the reference corresponding multiple declaration
      * Test Result:
      */
     @Test
-    public void scopeGraph7() {
+    public void Test6() {
+        ScopeGraph scopeGraph = ScopeGraphCreater.createScopeGraph4();
 
-        //Construct a Scope Graph
-        ScopeGraph scopeGraph = new ScopeGraph();
-        scopeGraph.generateScope(3);
+        Name moduleA5 = scopeGraph.getName("A5");
 
-        scopeGraph.makeAssociation(1, "A", 4, 3);
-        scopeGraph.makeAssociation(1, "A", 1, 2);
-
-        scopeGraph.makeDirectEdge(3, 1);
-        scopeGraph.makeDirectEdge(2, 1);
-
-        scopeGraph.makeDeclaration(3, "b", 6);
-        scopeGraph.makeReference(3, "a", 7);
-
-        Name moduleA5 = scopeGraph.makeNominalEdge(3, "A", 5);
-
-        scopeGraph.makeDeclaration(2, "a", 2);
-
-        scopeGraph.printScopeGraph();
+        scopeGraph.printDotForScopeGraph();
 
         System.out.println(scopeGraph.checkImportModule(moduleA5));
 

@@ -15,8 +15,8 @@
 2. try abstract in Edge
 
 4. 扩展关于module的能寻找多个declaration(ok)
-5. 创建一个类专门用于生成测试的scope graph
-6. 自动生成graphiz的代码
+5. 创建一个类专门用于生成测试的scope graph(os)
+6. 自动生成graphiz的代码(os)
 7. rapport
 
 
