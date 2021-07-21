@@ -25,10 +25,6 @@ public class NominalEdge extends TaggedEdge{
         this.end = end;
     }
 
-    public Scope getStart() {
-        return start;
-    }
-
     public Name getEnd() {
         return end;
     }

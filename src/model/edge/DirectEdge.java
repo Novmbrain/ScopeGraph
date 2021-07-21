@@ -23,11 +23,6 @@ public class DirectEdge extends TaggedEdge{
         this.end = end;
     }
 
-
-    public Scope getStart() {
-        return start;
-    }
-
     public Scope getEnd() {
         return end;
     }

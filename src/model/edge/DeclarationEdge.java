@@ -15,16 +15,9 @@ public class DeclarationEdge extends Edge{
     private Scope start;
     private Name end;
 
-    public DeclarationEdge() {
-    }
-
     public DeclarationEdge(Scope start, Name end) {
         this.start = start;
         this.end = end;
-    }
-
-    public Scope getStart() {
-        return start;
     }
 
     public Name getEnd() {

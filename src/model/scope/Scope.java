@@ -19,7 +19,6 @@ public class Scope extends Node {
     private DirectEdge directEdge;
     private List<NominalEdge> nominalEdges;
 
-
     private Scope() {
         declarationEdges = new ArrayList<>();
         referenceEdges = new ArrayList<>();
@@ -42,7 +41,6 @@ public class Scope extends Node {
 
         return name;
     }
-
 
     /**
      *
@@ -71,7 +69,7 @@ public class Scope extends Node {
         searchResult.addNodeToCurrentPath(this);
 
         //search all declaration in scope
-        for (DeclarationEdge declarationEdge : this.getDeclarationEdges()) {
+        for (DeclarationEdge declarationEdge : declarationEdges) {
 
             Name declaration = declarationEdge.getEnd();
 
@@ -87,7 +85,7 @@ public class Scope extends Node {
         }
 
         //search all import module in scope
-        for (NominalEdge nominalEdge : this.getNominalEdges()) {
+        for (NominalEdge nominalEdge : nominalEdges) {
             Name importModule = nominalEdge.getEnd();
 
             searchResult.addNodeToCurrentPath(importModule);//backtrack1 begin
@@ -114,7 +112,6 @@ public class Scope extends Node {
         }
 
         //use recursion to search node in parentScope
-        DirectEdge directEdge = this.getDirectEdge();
         //to check if current scope have a parentScope
         if (directEdge != null) {
             Scope parentScope = directEdge.getEnd();
@@ -133,7 +130,7 @@ public class Scope extends Node {
     protected void checkImportModule(Name module, SearchResult searchResult){
         searchResult.addNodeToCurrentPath(this);
 
-        for (DeclarationEdge declarationEdge : this.getDeclarationEdges()) {
+        for (DeclarationEdge declarationEdge : declarationEdges) {
             Name declaration = declarationEdge.getEnd();
 
             //first check this declaration is a module
@@ -148,7 +145,7 @@ public class Scope extends Node {
 
         //use recursion to search parentScope
         if(this.getDirectEdge() != null){
-            Scope parentScope = this.getDirectEdge().getEnd();
+            Scope parentScope = directEdge.getEnd();
             parentScope.checkImportModule(module, searchResult);
         }
 
@@ -162,20 +159,12 @@ public class Scope extends Node {
         return referenceEdges;
     }
 
-    public AssociationEdge getAssociationEdge() {
-        return associationEdge;
-    }
-
     public void setAssociationEdge(AssociationEdge associationEdge) {
         this.associationEdge = associationEdge;
     }
 
     public DirectEdge getDirectEdge() {
         return directEdge;
-    }
-
-    public List<NominalEdge> getNominalEdges() {
-        return nominalEdges;
     }
 
     public String printDot() {
@@ -196,12 +185,8 @@ public class Scope extends Node {
         for (NominalEdge nominalEdge : nominalEdges) {
             stringBuilder.append(nominalEdge);
         }
-        
-        return stringBuilder.toString();
-    }
 
-    public int getScopeId() {
-        return scopeId;
+        return stringBuilder.toString();
     }
 
     @Override

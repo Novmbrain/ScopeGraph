@@ -156,7 +156,7 @@ public class ScopeGraph {
         //get scope
         if(reference.getReferenceEdge() != null){
             //search all declaration in scope
-            Scope scope =reference.getReferenceEdge().getEnd();
+            Scope scope = reference.getReferenceEdge().getEnd();
             scope.checkReference(reference, searchResult);
 
         }

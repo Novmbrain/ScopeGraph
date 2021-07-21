@@ -14,16 +14,9 @@ public class ReferenceEdge extends Edge{
     private Name start;
     private Scope end;
 
-    public ReferenceEdge() {
-    }
-
     public ReferenceEdge(Name start, Scope end) {
         this.start = start;
         this.end = end;
-    }
-
-    public Name getStart() {
-        return start;
     }
 
     public Scope getEnd() {
