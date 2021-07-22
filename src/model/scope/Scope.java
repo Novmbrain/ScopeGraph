@@ -270,6 +270,9 @@ public class Scope extends Node {
         return newScope;
     }
 
+    public void setDirectEdge(DirectEdge directEdge) {
+        this.directEdge = directEdge;
+    }
 
     @Override
     public String toString() {

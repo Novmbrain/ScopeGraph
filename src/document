@@ -24,4 +24,10 @@
 3. printDot reconstruct enlever if() / distribuer printDot dans les sub-classes.
 
 
+---------
+问题
+1. copy的代码没有很好的遵守面对对象
+2. scope必须要用名字来进行区分(一开始建模遗留下来的问题)
+
+
 
