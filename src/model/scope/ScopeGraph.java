@@ -17,6 +17,11 @@ public class ScopeGraph {
 
     }
 
+    public ScopeGraph(HashMap<String, Name> nameMap, HashMap<Integer, Scope> scopeMap) {
+        this.nameMap = nameMap;
+        this.scopeMap = scopeMap;
+    }
+
     /**
      * Scope is automatically generated according to the number of inputs, and ScopeId is incremented on the basis of
      * existing ScopeId. Scopeid starts at 1
@@ -189,6 +194,23 @@ public class ScopeGraph {
 
         return null;
     }
+
+    public ScopeGraph selfCopy(){
+        HashMap<String, Name> newNameMap = new HashMap<>();
+        HashMap<Integer, Scope> newScopeMap = new HashMap<>();
+
+
+        for (Scope scope : scopeMap.values()) {
+            scope.selfCopy(newNameMap, newScopeMap);
+        }
+
+        return new ScopeGraph(newNameMap, newScopeMap);
+
+    }
+
+//    public ScopeGraph fuse(ScopeGraph scopeGraph, Scope scope){
+//
+//    }
 
 
 }

@@ -10,7 +10,7 @@ import org.junit.Test;
  * @create 2021-07-12 11:18
  *
  */
-public class ScopeGraphTest {
+public class ScopeGraphCreateAndResolveTest {
     /**
      * Test purpose: Find Declaration X1 from Reference X4
      */

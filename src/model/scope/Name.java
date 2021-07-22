@@ -2,6 +2,7 @@ package model.scope;
 
 import model.edge.*;
 
+import java.util.HashMap;
 import java.util.Objects;
 
 /**
@@ -16,7 +17,6 @@ public class Name extends Node{
     private ReferenceEdge referenceEdge;
     private AssociationEdge associationEdge;
     private NominalEdge nominalEdge;
-
 
     public Name(String variableName, int variableId) {
         this.variableName = variableName;
@@ -59,6 +59,25 @@ public class Name extends Node{
 
     public void setNominalEdge(NominalEdge nominalEdge) {
         this.nominalEdge = nominalEdge;
+    }
+
+    public Name selfCopy(Scope newScope) {
+        Name newName = new Name(variableName, variableId);
+
+        if (declarationEdge != null) {
+            newName.setDeclarationEdge(new DeclarationEdge(newScope, newName));
+        }
+
+        return newName;
+
+    }
+
+    public String getVariableName() {
+        return variableName;
+    }
+
+    public int getVariableId() {
+        return variableId;
     }
 
     @Override

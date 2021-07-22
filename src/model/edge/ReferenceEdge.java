@@ -23,6 +23,10 @@ public class ReferenceEdge extends Edge{
         return end;
     }
 
+    public Name getStart() {
+        return start;
+    }
+
     @Override
     public String toString() {
         return start + "->" + end + "\n";

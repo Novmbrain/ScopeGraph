@@ -1,10 +1,13 @@
 package model.scope;
 
+import com.sun.javafx.css.Declaration;
 import model.edge.*;
 import model.searchresult.PathImpl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Wenjie FU
@@ -167,6 +170,14 @@ public class Scope extends Node {
         return directEdge;
     }
 
+    public AssociationEdge getAssociationEdge() {
+        return associationEdge;
+    }
+
+    public int getScopeId() {
+        return scopeId;
+    }
+
     public String printDot() {
         StringBuilder stringBuilder = new StringBuilder();
 
@@ -177,10 +188,13 @@ public class Scope extends Node {
         for (ReferenceEdge referenceEdge : referenceEdges) {
             stringBuilder.append(referenceEdge);
         }
+        if (associationEdge != null) {
+            stringBuilder.append(associationEdge);
 
-        stringBuilder.append(associationEdge);
-
-        stringBuilder.append(directEdge);
+        }
+        if (directEdge != null) {
+            stringBuilder.append(directEdge);
+        }
 
         for (NominalEdge nominalEdge : nominalEdges) {
             stringBuilder.append(nominalEdge);
@@ -189,8 +203,89 @@ public class Scope extends Node {
         return stringBuilder.toString();
     }
 
+    protected Scope selfCopy(HashMap<String, Name> newNameMap,  HashMap<Integer, Scope> newScopeMap){
+        if (newScopeMap.containsValue(new Scope(scopeId))) {
+            return newScopeMap.get(scopeId);
+        }
+
+        Scope newScope = new Scope(scopeId);
+        newScopeMap.put(scopeId, newScope);
+
+
+        for (DeclarationEdge declarationEdge : declarationEdges) {
+            Name name = declarationEdge.getEnd();
+
+            Name newName  = newScope.constructDeclaration(name.getVariableName(), name.getVariableId());
+
+            if (newNameMap.containsKey(newName.toString())) {
+                continue;
+            }
+
+            newNameMap.put(newName.toString(), newName);
+
+            if(name.haveAssociationEdge()){
+                if (newScopeMap.containsValue(name.getAssociationEdge().getEnd())) {
+                    newName.constructAssociation(newScopeMap.get(name.getAssociationEdge().getEnd().getScopeId()));
+                }{
+                    newName.constructAssociation(name.getAssociationEdge().getEnd().selfCopy(newNameMap, newScopeMap));
+                }
+            }
+        }
+
+        for (ReferenceEdge referenceEdge : referenceEdges) {
+            Name name = referenceEdge.getStart();
+
+            Name newName = new Name(name.getVariableName(), name.getVariableId());
+
+            if (newNameMap.containsValue(newName)) {
+                continue;
+            }
+
+            newNameMap.put(newName.toString(), newName);
+            newName.constructReference(newScope);
+
+        }
+
+        if (directEdge != null) {
+
+            if (!newScopeMap.containsValue(this.getDirectEdge().getEnd())) {
+                newScope.constructDirectEdge(this.getDirectEdge().getEnd().selfCopy(newNameMap, newScopeMap));
+            } else {
+                newScope.constructDirectEdge(newScopeMap.get(this.getDirectEdge().getEnd().getScopeId()));
+            }
+        }
+
+        for (NominalEdge nominalEdge : nominalEdges) {
+            Name name = nominalEdge.getEnd();
+
+            Name newName = newScope.constructNominalEdge(name.getVariableName(), name.getVariableId());
+
+            if (newNameMap.containsValue(newName)) {
+                continue;
+            }
+
+            newNameMap.put(newName.toString(), newName);
+        }
+
+        return newScope;
+    }
+
+
     @Override
     public String toString() {
         return "" + scopeId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Scope scope = (Scope) o;
+        return scopeId == scope.scopeId;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(scopeId);
     }
 }
