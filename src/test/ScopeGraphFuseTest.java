@@ -25,17 +25,17 @@ public class ScopeGraphFuseTest {
         return scopeGraph;
     }
 
-    @Test
-    public void fuseScopeGraph1AndScopaGraph2() {
-        ScopeGraph scopeGraph1 = createScopeGraph1();
-        scopeGraph1.printDotForScopeGraph();
-
-        ScopeGraph scopeGraph2 = createScopeGraph2();
-        scopeGraph2.printDotForScopeGraph();
-
-
-        ScopeGraph fuse = scopeGraph1.fuse(scopeGraph2);
-        fuse.printDotForScopeGraph();
-
-    }
+//    @Test
+//    public void fuseScopeGraph1AndScopaGraph2() {
+//        ScopeGraph scopeGraph1 = createScopeGraph1();
+//        scopeGraph1.printDotForScopeGraph();
+//
+//        ScopeGraph scopeGraph2 = createScopeGraph2();
+//        scopeGraph2.printDotForScopeGraph();
+//
+//
+//        ScopeGraph fuse = scopeGraph1.fuse(scopeGraph2);
+//        fuse.printDotForScopeGraph();
+//
+//    }
 }

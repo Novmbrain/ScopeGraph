@@ -1,5 +1,7 @@
 package model.scope;
 
+import model.edge.Edge;
+
 import java.util.HashMap;
 
 /**
@@ -167,34 +169,33 @@ public class ScopeGraph {
         SearchResult searchResult = new SearchResult();
         searchResult.addNodeToCurrentPath(reference);
 
-        //get scope
-        if (reference.getReferenceEdge() != null) {
-            //search all declaration in scope
-            Scope scope = reference.getReferenceEdge().getEnd();
-            scope.checkReference(reference, searchResult);
+        Edge referenceEdge = reference.getReferenceEdge();
 
+        if (referenceEdge != null) {
+            Node scope = referenceEdge.getEnd();
+            ((Scope)scope).checkReference(reference, searchResult);
         }
 
         return searchResult;
     }
 
-    public SearchResult checkImportModule(Name module) {
-
-        SearchResult searchResult = new SearchResult();
-
-        if (module.getReferenceEdge() != null) {
-            Scope scope = module.getReferenceEdge().getEnd();
-
-            if (scope == null) return searchResult;
-
-            searchResult.addNodeToCurrentPath(module);
-
-            scope.checkImportModule(module, searchResult);
-        }
-
-        return searchResult;
-
-    }
+//    public SearchResult checkImportModule(Name module) {
+//
+//        SearchResult searchResult = new SearchResult();
+//
+//        if (module.getReferenceEdge() != null) {
+//            Scope scope = module.getReferenceEdge().getEnd();
+//
+//            if (scope == null) return searchResult;
+//
+//            searchResult.addNodeToCurrentPath(module);
+//
+//            scope.checkImportModule(module, searchResult);
+//        }
+//
+//        return searchResult;
+//
+//    }
 
     public Name getName(String name) {
         if (name != null && name.length() > 0) {
@@ -214,80 +215,78 @@ public class ScopeGraph {
 
 
 
-    public ScopeGraph selfCopy() {
-        HashMap<String, Name> newNameMap = new HashMap<>();
-        HashMap<Integer, Scope> newScopeMap = new HashMap<>();
+//    public ScopeGraph selfCopy() {
+//        HashMap<String, Name> newNameMap = new HashMap<>();
+//        HashMap<Integer, Scope> newScopeMap = new HashMap<>();
+//
+//
+//        for (Scope scope : scopeMap.values()) {
+//            scope.selfCopy(newNameMap, newScopeMap);
+//        }
+//
+//        return new ScopeGraph(newNameMap, newScopeMap);
+//
+//    }
 
-
-        for (Scope scope : scopeMap.values()) {
-            scope.selfCopy(newNameMap, newScopeMap);
-        }
-
-        return new ScopeGraph(newNameMap, newScopeMap);
-
-    }
-
-    public ScopeGraph fuse(ScopeGraph scopeGraph){
-        ScopeGraph copyScopeGraph1 = this.selfCopy();
-        ScopeGraph copyScopeGraph2 = scopeGraph.selfCopy();
-
-        //use this variable to count how many scope have the same name
-        int count = 0;
-        Scope fuseScope1 = null;
-        Scope fuseScope2 = null;
-
-        for (Scope scope1 : copyScopeGraph1.getScopeMap().values()) {
-            for (Scope scope2 : copyScopeGraph2.getScopeMap().values()) {
-                if(scope1.equals(scope2)){
-                    count++;
-                    fuseScope1 = scope1;
-                    fuseScope2 = scope2;
-                }
-            }
-        }
-
-        if (count > 1) {
-            System.out.println("there are multiple scope which are possible to fuse");
-            return null;
-        } else if (count <= 0) {
-            System.out.println("no same scope, can't fuse");
-            return null;
-        } else {
-
-            HashMap<String, Name> copyNameMap1 = copyScopeGraph1.getNameMap();
-            HashMap<Integer, Scope> copyScopeMap1 = copyScopeGraph1.getScopeMap();
-
-            HashMap<String, Name> copyNameMap2 = copyScopeGraph2.getNameMap();
-            HashMap<Integer, Scope> copyScopeMap2 = copyScopeGraph2.getScopeMap();
-
-            if (fuseScope1.getDirectEdge() == null) {//which means that we combine ScopeGraph1 to ScopeGraph2
-                int parentScopeId = fuseScope2.getDirectEdge().getEnd().getScopeId();
-
-                copyScopeMap2.remove(fuseScope2);
-
-                copyNameMap2.putAll(copyNameMap1);
-                copyScopeMap2.putAll(copyScopeMap1);
-
-                copyScopeGraph2.makeDirectEdge(fuseScope1.getScopeId(), parentScopeId);
-                return copyScopeGraph2;
-
-            }else{
-                int parentScopeId = fuseScope1.getDirectEdge().getEnd().getScopeId();
-
-                copyScopeMap1.remove(fuseScope1);
-
-                copyNameMap1.putAll(copyNameMap2);
-                copyScopeMap1.putAll(copyScopeMap2);
-
-                copyScopeGraph1.makeDirectEdge(fuseScope2.getScopeId(), parentScopeId);
-                return copyScopeGraph1;
-            }
-
-        }
-
-
-
-    }
+//    public ScopeGraph fuse(ScopeGraph scopeGraph){
+//        ScopeGraph copyScopeGraph1 = this.selfCopy();
+//        ScopeGraph copyScopeGraph2 = scopeGraph.selfCopy();
+//
+//        //use this variable to count how many scope have the same name
+//        int count = 0;
+//        Scope fuseScope1 = null;
+//        Scope fuseScope2 = null;
+//
+//        for (Scope scope1 : copyScopeGraph1.getScopeMap().values()) {
+//            for (Scope scope2 : copyScopeGraph2.getScopeMap().values()) {
+//                if(scope1.equals(scope2)){
+//                    count++;
+//                    fuseScope1 = scope1;
+//                    fuseScope2 = scope2;
+//                }
+//            }
+//        }
+//
+//        if (count > 1) {
+//            System.out.println("there are multiple scope which are possible to fuse");
+//            return null;
+//        } else if (count <= 0) {
+//            System.out.println("no same scope, can't fuse");
+//            return null;
+//        } else {
+//
+//            HashMap<String, Name> copyNameMap1 = copyScopeGraph1.getNameMap();
+//            HashMap<Integer, Scope> copyScopeMap1 = copyScopeGraph1.getScopeMap();
+//
+//            HashMap<String, Name> copyNameMap2 = copyScopeGraph2.getNameMap();
+//            HashMap<Integer, Scope> copyScopeMap2 = copyScopeGraph2.getScopeMap();
+//
+//            if (fuseScope1.getDirectEdge() == null) {//which means that we combine ScopeGraph1 to ScopeGraph2
+//                int parentScopeId = fuseScope2.getDirectEdge().getEnd().getScopeId();
+//
+//                copyScopeMap2.remove(fuseScope2);
+//
+//                copyNameMap2.putAll(copyNameMap1);
+//                copyScopeMap2.putAll(copyScopeMap1);
+//
+//                copyScopeGraph2.makeDirectEdge(fuseScope1.getScopeId(), parentScopeId);
+//                return copyScopeGraph2;
+//
+//            }else{
+//                int parentScopeId = fuseScope1.getDirectEdge().getEnd().getScopeId();
+//
+//                copyScopeMap1.remove(fuseScope1);
+//
+//                copyNameMap1.putAll(copyNameMap2);
+//                copyScopeMap1.putAll(copyScopeMap2);
+//
+//                copyScopeGraph1.makeDirectEdge(fuseScope2.getScopeId(), parentScopeId);
+//                return copyScopeGraph1;
+//            }
+//
+//        }
+//
+//    }
 
 
 }

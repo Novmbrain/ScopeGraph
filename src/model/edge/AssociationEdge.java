@@ -1,6 +1,7 @@
 package model.edge;
 
 import model.scope.Name;
+import model.scope.Node;
 import model.scope.Scope;
 
 /**
@@ -20,8 +21,18 @@ public class AssociationEdge extends Edge{
         this.end = end;
     }
 
+
     public Scope getEnd() {
         return end;
+    }
+
+    @Override
+    public Node getStart() {
+        return start;
+    }
+
+    public boolean isAssociationEdge(){
+        return true;
     }
 
     @Override

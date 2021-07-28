@@ -1,6 +1,7 @@
 package model.edge;
 
 import model.scope.Name;
+import model.scope.Node;
 import model.scope.Scope;
 
 /**
@@ -27,6 +28,11 @@ public class NominalEdge extends TaggedEdge{
 
     public Name getEnd() {
         return end;
+    }
+
+    @Override
+    public Node getStart() {
+        return start;
     }
 
     @Override

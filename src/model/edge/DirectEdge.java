@@ -1,5 +1,6 @@
 package model.edge;
 
+import model.scope.Node;
 import model.scope.Scope;
 
 /***
@@ -23,8 +24,17 @@ public class DirectEdge extends TaggedEdge{
         this.end = end;
     }
 
+    public boolean isDirectEdge(){
+        return true;
+    }
+
     public Scope getEnd() {
         return end;
+    }
+
+    @Override
+    public Node getStart() {
+        return start;
     }
 
     @Override

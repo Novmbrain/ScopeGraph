@@ -3,6 +3,8 @@ package model.edge;
 import model.scope.Name;
 import model.scope.Scope;
 
+import java.util.TreeMap;
+
 /**
  * A reference constraint specifies that reference belongs to scope
  * Graphically : O <- []
@@ -17,6 +19,11 @@ public class ReferenceEdge extends Edge{
     public ReferenceEdge(Name start, Scope end) {
         this.start = start;
         this.end = end;
+    }
+
+
+    public boolean isReferenceEdge(){
+        return true;
     }
 
     public Scope getEnd() {
