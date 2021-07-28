@@ -41,7 +41,7 @@ public class Scope extends Node {
         DeclarationEdge declarationEdge = new DeclarationEdge(this, name);
         declarationEdges.add(declarationEdge);
         name.setDeclarationEdge(declarationEdge);
-
+        //---------------
         return name;
     }
 
