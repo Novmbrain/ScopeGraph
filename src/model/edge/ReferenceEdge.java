@@ -3,7 +3,7 @@ package model.edge;
 import model.scope.Name;
 import model.scope.Scope;
 
-import java.util.TreeMap;
+import java.util.HashMap;
 
 /**
  * A reference constraint specifies that reference belongs to scope
@@ -24,6 +24,20 @@ public class ReferenceEdge extends Edge{
 
     public boolean isReferenceEdge(){
         return true;
+    }
+
+    @Override
+    public void selfCopy(HashMap<String, Name> newNameMap, HashMap<Integer, Scope> newScopeMap, Scope scope, Scope newScope) {
+
+            Name newName = new Name(start.getVariableName(), start.getVariableId());
+
+            if (newNameMap.containsKey(newName)) {
+                return;
+            }
+
+            newNameMap.put(newName.toString(), newName);
+            newName.constructReference(newScope);
+
     }
 
     public Scope getEnd() {

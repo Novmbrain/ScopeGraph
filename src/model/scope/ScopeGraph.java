@@ -75,7 +75,6 @@ public class ScopeGraph {
      * @param parentScopeId
      */
     public void makeDirectEdge(int childrenScopeId, int parentScopeId) {
-//        if (outOfScopeId(childrenScopeId) || outOfScopeId(parentScopeId) || childrenScopeId == parentScopeId) return;
 
         Scope childrenScope = scopeMap.get(childrenScopeId);
         Scope parentScope = scopeMap.get(parentScopeId);
@@ -90,7 +89,6 @@ public class ScopeGraph {
      * @return
      */
     public Name makeNominalEdge(int scopeId, String variableName, int variableId) {
-//        if (outOfScopeId(scopeId)) return null;
 
         Scope scope = scopeMap.get(scopeId);
         Name name = scope.constructNominalEdge(variableName, variableId);
@@ -107,8 +105,6 @@ public class ScopeGraph {
      * @param associationScopeId
      */
     public Name makeAssociation(int declarationScopeId, String variableName, int variableId, int associationScopeId) {
-//        if (outOfScopeId(declarationScopeId) || outOfScopeId(associationScopeId) || declarationScopeId == associationScopeId)
-//            return null;
 
         Scope declarationScope = scopeMap.get(declarationScopeId);
         Scope assotiationScope = scopeMap.get(associationScopeId);
@@ -140,14 +136,6 @@ public class ScopeGraph {
         return name;
     }
 
-//    private boolean outOfScopeId(int scopeId) {
-//        if (scopeId > scopeMap.size() || scopeId <= 0 || scopeMap.isEmpty()) {
-//            return true;
-//        } else {
-//            return false;
-//        }
-//
-//    }
 
     public void printDotForScopeGraph() {
         System.out.println("digraph first{\n rankdir=BT \n");
@@ -173,29 +161,26 @@ public class ScopeGraph {
 
         if (referenceEdge != null) {
             Node scope = referenceEdge.getEnd();
-            ((Scope)scope).checkReference(reference, searchResult);
+            ((Scope) scope).checkReference(reference, searchResult);
         }
 
         return searchResult;
     }
 
-//    public SearchResult checkImportModule(Name module) {
-//
-//        SearchResult searchResult = new SearchResult();
-//
-//        if (module.getReferenceEdge() != null) {
-//            Scope scope = module.getReferenceEdge().getEnd();
-//
-//            if (scope == null) return searchResult;
-//
-//            searchResult.addNodeToCurrentPath(module);
-//
-//            scope.checkImportModule(module, searchResult);
-//        }
-//
-//        return searchResult;
-//
-//    }
+    public SearchResult checkImportModule(Name module) {
+
+        SearchResult searchResult = new SearchResult();
+
+        Node scope = module.getReferenceScope();
+        if (scope != null) {
+            searchResult.addNodeToCurrentPath(module);
+
+            ((Scope) scope).checkImportModule(module, searchResult);
+        }
+
+        return searchResult;
+
+    }
 
     public Name getName(String name) {
         if (name != null && name.length() > 0) {
@@ -214,19 +199,18 @@ public class ScopeGraph {
     }
 
 
+    public ScopeGraph selfCopy() {
+        HashMap<String, Name> newNameMap = new HashMap<>();
+        HashMap<Integer, Scope> newScopeMap = new HashMap<>();
 
-//    public ScopeGraph selfCopy() {
-//        HashMap<String, Name> newNameMap = new HashMap<>();
-//        HashMap<Integer, Scope> newScopeMap = new HashMap<>();
-//
-//
-//        for (Scope scope : scopeMap.values()) {
-//            scope.selfCopy(newNameMap, newScopeMap);
-//        }
-//
-//        return new ScopeGraph(newNameMap, newScopeMap);
-//
-//    }
+
+        for (Scope scope : scopeMap.values()) {
+            scope.selfCopy(newNameMap, newScopeMap);
+        }
+
+        return new ScopeGraph(newNameMap, newScopeMap);
+
+    }
 
 //    public ScopeGraph fuse(ScopeGraph scopeGraph){
 //        ScopeGraph copyScopeGraph1 = this.selfCopy();

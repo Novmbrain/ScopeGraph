@@ -4,6 +4,8 @@ import model.scope.Name;
 import model.scope.Node;
 import model.scope.Scope;
 
+import java.util.HashMap;
+
 /**
  * A declaration constraint specifies that declaration belongs to scope
  * Graphically : O -> []
@@ -29,6 +31,32 @@ public class DeclarationEdge extends Edge{
     public Node getStart() {
         return start;
     }
+
+    public boolean isDeclarationEdge() {
+        return true;
+    }
+
+    @Override
+    public void selfCopy(HashMap<String, Name> newNameMap, HashMap<Integer, Scope> newScopeMap, Scope scope, Scope newScope) {
+
+            Name newName  = newScope.constructDeclaration(end.getVariableName(), end.getVariableId());
+
+            if (newNameMap.containsKey(newName.toString())) {
+                return;
+            }
+
+            newNameMap.put(newName.toString(), newName);
+
+            if(end.haveAssociationEdge()){
+                if (newScopeMap.containsValue(end.getAssociationEdge().getEnd())) {
+                    newName.constructAssociation(newScopeMap.get(((Scope)end.getAssociationEdge().getEnd()).getScopeId()));
+                }{
+                    newName.constructAssociation(((Scope)end.getAssociationEdge().getEnd()).selfCopy(newNameMap, newScopeMap));
+                }
+            }
+    }
+
+
 
     @Override
     public String toString() {

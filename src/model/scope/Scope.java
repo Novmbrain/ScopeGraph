@@ -14,15 +14,9 @@ import java.util.*;
 public class Scope extends Node {
 
     private int scopeId;
-    private List<Edge> edges;
 
     private Scope() {
         edges = new LinkedList<>();
-    }
-
-    @Override
-    public boolean haveAssociationEdge() {
-        return false;
     }
 
     public Scope(int scopeId) {
@@ -30,7 +24,7 @@ public class Scope extends Node {
         this.scopeId = scopeId;
     }
 
-    protected Name constructDeclaration(String variableName, int variableId){
+    public Name constructDeclaration(String variableName, int variableId){
         //construct new node
         Name name = new Name(variableName, variableId);
 
@@ -46,14 +40,14 @@ public class Scope extends Node {
      *
      * @param parentScope
      */
-    protected void constructDirectEdge(Scope parentScope){
+    public void constructDirectEdge(Scope parentScope){
         //connect this with new scope with DirectEdge(childrenScope -> parentScope)
         DirectEdge directEdge = new DirectEdge(this, parentScope);
         this.addEdge(directEdge);
 
     }
 
-    protected Name constructNominalEdge(String variableName, int variableId) {
+    public Name constructNominalEdge(String variableName, int variableId) {
         //construct new node
         Name name = new Name(variableName, variableId);
 
@@ -101,32 +95,44 @@ public class Scope extends Node {
             searchResult.removeLastNodeFromCurrentPath();
         }
 
-//        //search all import module in scope
-//        for (NominalEdge nominalEdge : nominalEdges) {
-//            Name importModule = nominalEdge.getEnd();
-//
-//            searchResult.addNodeToCurrentPath(importModule);//backtrack1 begin
-//
-//            //first check if the reference of this module has its declaration
-//            SearchResult moduleSearchResult = new SearchResult();
-//            checkImportModule(importModule, moduleSearchResult);
-//            //It's possible that a reference of a module has multiple declarations
-//            if (moduleSearchResult.pathNumber() != 0) {
-//                List<PathImpl<Node>> pathImpls = moduleSearchResult.getAllPath();
-//                for (PathImpl pathImpl : pathImpls) {
-//                    //the last node in the path is the declaration of this module
-//                    Name module = (Name) pathImpl.getLastNode();
-//                    Scope end = module.getAssociationEdge().getEnd();
-//
-//                    searchResult.addNodeToCurrentPath(module);//backtrack2 begin
-//
-//                    end.checkReference(reference, searchResult);
-//
-//                    searchResult.removeLastNodeFromCurrentPath();//backtrack2 end
-//                }
-//            }
-//            searchResult.removeLastNodeFromCurrentPath();//backtrack1 end
-//        }
+        //search all import module in scope
+        for (Edge edge : edges) {
+
+            if(edge.isNominalEdge()){
+
+                Node importModule = edge.getEnd();
+
+                searchResult.addNodeToCurrentPath(importModule);//backtrack1 begin
+
+                //first check if the reference of this module has its declaration
+                SearchResult moduleSearchResult = new SearchResult();
+                checkImportModule(importModule, moduleSearchResult);
+
+                //It's possible that a reference of a module has multiple declarations
+                if (moduleSearchResult.pathNumber() != 0) {
+                    List<PathImpl<Node>> pathImpls = moduleSearchResult.getAllPath();
+                    for (PathImpl pathImpl : pathImpls) {
+                        //the last node in the path is the declaration of this module
+                        Name module = (Name) pathImpl.getLastNode();
+
+//                        Scope end = module.getAssociationEdge().getEnd();
+                        if(module.getAssociationEdge() != null){
+                            Edge associationEdge = module.getAssociationEdge();
+                            searchResult.addNodeToCurrentPath(module);//backtrack2 begin
+
+                            Node scope = associationEdge.getEnd();
+                            ((Scope)scope).checkReference(reference, searchResult);
+
+                            searchResult.removeLastNodeFromCurrentPath();//backtrack2 end
+
+                        }
+
+                    }
+                }
+                searchResult.removeLastNodeFromCurrentPath();//backtrack1 end
+            }
+
+        }
 
         //use recursion to search node in parentScope
         for (Edge edge : edges) {
@@ -139,109 +145,57 @@ public class Scope extends Node {
         }
 
     }
-//
-//    /**
-//     * For now, it only works: find a declaration and end the search
-//     * @param module
-//     * @param searchResult
-//     */
-//    protected void checkImportModule(Name module, SearchResult searchResult){
-//        searchResult.addNodeToCurrentPath(this);
-//
-//        for (DeclarationEdge declarationEdge : declarationEdges) {
-//            Name declaration = declarationEdge.getEnd();
-//
-//            //first check this declaration is a module
-//            if (declaration.haveAssociationEdge()) {
-//                if(module.equals(declaration)){
-//                    searchResult.addNodeToCurrentPath(declaration);
-//                    searchResult.addCurrentPath();
-//                    searchResult.removeLastNodeFromCurrentPath();
-//                }
-//            }
-//        }
-//
-//        //use recursion to search parentScope
-//        if(this.getDirectEdge() != null){
-//            Scope parentScope = directEdge.getEnd();
-//            parentScope.checkImportModule(module, searchResult);
-//        }
-//
-//    }
+
+    /**
+     * For now, it only works: find a declaration and end the search
+     * @param module
+     * @param searchResult
+     */
+    protected void checkImportModule(Node module, SearchResult searchResult){
+        searchResult.addNodeToCurrentPath(this);
+
+        for (Edge edge : edges) {
+            if(edge.isDeclarationEdge()){
+                Node declaration = edge.getEnd();
+                //first check this declaration is a module
+                if (declaration.haveAssociationEdge()) {
+                    if(module.equals(declaration)){
+                        searchResult.addNodeToCurrentPath(declaration);
+                        searchResult.addCurrentPath();
+                        searchResult.removeLastNodeFromCurrentPath();
+                    }
+                }
+            }
+        }
+
+        for (Edge edge : edges) {
+            if (edge.isDirectEdge()) {
+                Node parentScope = edge.getEnd();
+                ((Scope)parentScope).checkImportModule(module, searchResult);
+            }
+        }
+
+    }
 
 
 
 
+    public Scope selfCopy(HashMap<String, Name> newNameMap, HashMap<Integer, Scope> newScopeMap){
+        if (newScopeMap.containsValue(new Scope(scopeId))) {
+            return newScopeMap.get(scopeId);
+        }
+
+        Scope newScope = new Scope(scopeId);
+        newScopeMap.put(scopeId, newScope);
+
+        for (Edge edge : edges) {
+            edge.selfCopy(newNameMap, newScopeMap, this, newScope);
+        }
 
 
+        return newScope;
+    }
 
-//
-//    protected Scope selfCopy(HashMap<String, Name> newNameMap,  HashMap<Integer, Scope> newScopeMap){
-//        if (newScopeMap.containsValue(new Scope(scopeId))) {
-//            return newScopeMap.get(scopeId);
-//        }
-//
-//        Scope newScope = new Scope(scopeId);
-//        newScopeMap.put(scopeId, newScope);
-//
-//
-//        for (DeclarationEdge declarationEdge : declarationEdges) {
-//            Name name = declarationEdge.getEnd();
-//
-//            Name newName  = newScope.constructDeclaration(name.getVariableName(), name.getVariableId());
-//
-//            if (newNameMap.containsKey(newName.toString())) {
-//                continue;
-//            }
-//
-//            newNameMap.put(newName.toString(), newName);
-//
-//            if(name.haveAssociationEdge()){
-//                if (newScopeMap.containsValue(name.getAssociationEdge().getEnd())) {
-//                    newName.constructAssociation(newScopeMap.get(name.getAssociationEdge().getEnd().getScopeId()));
-//                }{
-//                    newName.constructAssociation(name.getAssociationEdge().getEnd().selfCopy(newNameMap, newScopeMap));
-//                }
-//            }
-//        }
-//
-//        for (ReferenceEdge referenceEdge : referenceEdges) {
-//            Name name = referenceEdge.getStart();
-//
-//            Name newName = new Name(name.getVariableName(), name.getVariableId());
-//
-//            if (newNameMap.containsValue(newName)) {
-//                continue;
-//            }
-//
-//            newNameMap.put(newName.toString(), newName);
-//            newName.constructReference(newScope);
-//
-//        }
-//
-//        if (directEdge != null) {
-//
-//            if (!newScopeMap.containsValue(this.getDirectEdge().getEnd())) {
-//                newScope.constructDirectEdge(this.getDirectEdge().getEnd().selfCopy(newNameMap, newScopeMap));
-//            } else {
-//                newScope.constructDirectEdge(newScopeMap.get(this.getDirectEdge().getEnd().getScopeId()));
-//            }
-//        }
-//
-//        for (NominalEdge nominalEdge : nominalEdges) {
-//            Name name = nominalEdge.getEnd();
-//
-//            Name newName = newScope.constructNominalEdge(name.getVariableName(), name.getVariableId());
-//
-//            if (newNameMap.containsValue(newName)) {
-//                continue;
-//            }
-//
-//            newNameMap.put(newName.toString(), newName);
-//        }
-//
-//        return newScope;
-//    }
 
 
 

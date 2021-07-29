@@ -65,53 +65,54 @@ public class Test1ScopeGraphCreateAndResolve {
 
         scopeGraph.printDotForScopeGraph();
 
-//        System.out.println(scopeGraph.checkReference(referencea7));
+        System.out.println(scopeGraph.checkReference(referencea7));
 
     }
-//
-//    /**
-//     * Test purpose: Test when the reference corresponding declaration does not exist
-//     */
-//    @Test
-//    public void Test4() {
-//        ScopeGraph scopeGraph = ScopeGraphCreater.ScopeGraphFirgure3Right();
-//
-//        scopeGraph.printDotForScopeGraph();
-//
-//        Name testName = new Name("j", 111);
-//
-//        System.out.println(scopeGraph.checkReference(testName));
-//
-//    }
-//    /**
-//     * Test purpose: Find Declaration A1 from ImportModule A5.
-//     */
-//    @Test
-//    public void Test5() {
-//        ScopeGraph scopeGraph = ScopeGraphCreater.ScopeGraphFirgure3Right();
-//
-//        Name moduleA5 = scopeGraph.getName("A5");
-//
-//        scopeGraph.printDotForScopeGraph();
-//
-//        System.out.println(scopeGraph.checkImportModule(moduleA5));
-//
-//    }
-//
-//    /**
-//
-//     * Test purpose: Find Reference A5 from Declaration A1 and A4. Test when the reference corresponding multiple declaration
-//     * Test Result:
-//     */
-//    @Test
-//    public void Test6() {
-//        ScopeGraph scopeGraph = ScopeGraphCreater.createScopeGraph4();
-//
-//        Name moduleA5 = scopeGraph.getName("A5");
-//
-//        scopeGraph.printDotForScopeGraph();
-//
-//        System.out.println(scopeGraph.checkImportModule(moduleA5));
-//
-//    }
+
+    /**
+     * Test purpose: Test when the reference corresponding declaration does not exist
+     */
+    @Test
+    public void Test4() {
+        ScopeGraph scopeGraph = ScopeGraphCreater.ScopeGraphFirgure3Right();
+
+        scopeGraph.printDotForScopeGraph();
+
+        Name testName = new Name("j", 111);
+
+        System.out.println(scopeGraph.checkReference(testName));
+
+    }
+    /**
+     * Test purpose: Find Declaration A1 from ImportModule A5.
+     */
+    @Test
+    public void Test5() {
+        ScopeGraph scopeGraph = ScopeGraphCreater.ScopeGraphFirgure3Right();
+
+        Name moduleA5 = scopeGraph.getName("A5");
+
+        scopeGraph.printDotForScopeGraph();
+
+        System.out.println(scopeGraph.checkImportModule(moduleA5));
+
+    }
+
+
+    /**
+
+     * Test purpose: Find Reference A5 from Declaration A1 and A4. Test when the reference corresponding multiple declaration
+     * Test Result:
+     */
+    @Test
+    public void Test6() {
+        ScopeGraph scopeGraph = ScopeGraphCreater.createScopeGraph4();
+
+        Name moduleA5 = scopeGraph.getName("A5");
+
+        scopeGraph.printDotForScopeGraph();
+
+        System.out.println(scopeGraph.checkImportModule(moduleA5));
+
+    }
 }

@@ -4,6 +4,8 @@ import model.scope.Name;
 import model.scope.Node;
 import model.scope.Scope;
 
+import java.util.HashMap;
+
 /**
  * An association constraint specifies s as the associated scope of declaration. Associated scopes
  * can be used to connect the declaration of a collection of names to the scope declaring those names(e.g. the body of a module)
@@ -33,6 +35,11 @@ public class AssociationEdge extends Edge{
 
     public boolean isAssociationEdge(){
         return true;
+    }
+
+    @Override
+    public void selfCopy(HashMap<String, Name> newNameMap, HashMap<Integer, Scope> newScopeMap, Scope scope, Scope newScope) {
+
     }
 
     @Override

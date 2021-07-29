@@ -1,7 +1,10 @@
 package model.edge;
 
+import model.scope.Name;
 import model.scope.Node;
 import model.scope.Scope;
+
+import java.util.HashMap;
 
 /***
  * A direct edge constraint specifies a direct l-labeled edge from scope s1 to scope s2
@@ -26,6 +29,18 @@ public class DirectEdge extends TaggedEdge{
 
     public boolean isDirectEdge(){
         return true;
+    }
+
+    @Override
+    public void selfCopy(HashMap<String, Name> newNameMap, HashMap<Integer, Scope> newScopeMap, Scope curScope, Scope newScope) {
+
+        Node parentScope = curScope.getParentScope();
+        if (!newScopeMap.containsValue(parentScope)) {
+            newScope.constructDirectEdge(((Scope) parentScope).selfCopy(newNameMap, newScopeMap));
+        } else {
+            newScope.constructDirectEdge(newScopeMap.get(((Scope)parentScope).getScopeId()));
+        }
+
     }
 
     public Scope getEnd() {

@@ -15,22 +15,20 @@ public class Name extends Node{
     private String variableName;
     private int variableId;
 
-    private List<Edge> edges;
-
     public Name(String variableName, int variableId) {
         this.variableName = variableName;
         this.variableId = variableId;
         edges = new LinkedList<>();
     }
 
-    protected void constructAssociation(Scope scope) {
+    public void constructAssociation(Scope scope) {
         //connect scope with node using referenceEdge(name -> scope)
         AssociationEdge associationEdge = new AssociationEdge(this, scope);
         this.addEdge(associationEdge);
         scope.addEdge(associationEdge);
     }
 
-    protected void constructReference(Scope scope) {
+    public void constructReference(Scope scope) {
         //connect scope with node using referenceEdge(name -> scope)
         ReferenceEdge referenceEdge = new ReferenceEdge(this, scope);
         this.addEdge(referenceEdge);
@@ -42,31 +40,16 @@ public class Name extends Node{
         edges.add(edge);
     }
 
-    public boolean haveAssociationEdge(){
-        for (Edge edge : edges) {
-            return edge.isAssociationEdge();
+    protected Node getReferenceScope(){
+
+        Edge referenceEdge = this.getReferenceEdge();
+        if(referenceEdge !=  null){
+            return referenceEdge.getEnd();
         }
 
-        return false;
-//        if (associationEdge == null) {
-//            return false;
-//        } else {
-//            return true;
-//        }
+        return null;
     }
 
-
-//
-//    public Name selfCopy(Scope newScope) {
-//        Name newName = new Name(variableName, variableId);
-//
-//        if (declarationEdge != null) {
-//            newName.setDeclarationEdge(new DeclarationEdge(newScope, newName));
-//        }
-//
-//        return newName;
-//
-//    }
 
     public String getVariableName() {
         return variableName;
