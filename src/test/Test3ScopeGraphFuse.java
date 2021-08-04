@@ -8,7 +8,7 @@ import org.junit.Test;
  * @author Wenjie FU
  * @create 2021-07-22 21:48
  */
-public class ScopeGraphFuseTest {
+public class Test3ScopeGraphFuse {
     public ScopeGraph createScopeGraph1(){
         ScopeGraph scopeGraph = new ScopeGraph();
         scopeGraph.generateScope(new int[]{1,2});

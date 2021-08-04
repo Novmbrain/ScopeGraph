@@ -10,7 +10,7 @@ import java.util.List;
  */
 public abstract class Node {
 
-    List<Edge> edges;
+    public List<Edge> edges;
 
     public Node() {
 
@@ -32,6 +32,7 @@ public abstract class Node {
                 return edge;
             }
         }
+
         return null;
     }
 

@@ -3,7 +3,6 @@ package model.scope;
 import model.edge.*;
 
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -41,7 +40,6 @@ public class Name extends Node{
     }
 
     protected Node getReferenceScope(){
-
         Edge referenceEdge = this.getReferenceEdge();
         if(referenceEdge !=  null){
             return referenceEdge.getEnd();

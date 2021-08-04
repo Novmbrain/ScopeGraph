@@ -7,7 +7,6 @@ import model.scope.Scope;
 import java.util.HashMap;
 
 /**
- * 。。。。。。。。
  *
  * @author Wenjie FU
  * @create 2021-06-30 14:19
