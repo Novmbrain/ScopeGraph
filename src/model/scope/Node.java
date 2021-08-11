@@ -26,7 +26,7 @@ public abstract class Node {
         return false;
     }
 
-    public Edge getAssociationEdge(){
+    public Edge getAssociationEdge() {
         for (Edge edge : edges) {
             if (edge.isAssociationEdge()) {
                 return edge;
@@ -36,7 +36,7 @@ public abstract class Node {
         return null;
     }
 
-    public Node getParentScope(){
+    public Node getParentScope() {
         for (Edge edge : edges) {
             if (edge.isDirectEdge()) {
                 return edge.getEnd();

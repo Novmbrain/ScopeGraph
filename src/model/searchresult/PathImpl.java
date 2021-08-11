@@ -32,7 +32,7 @@ public class PathImpl<E> implements Path<E> {
 
     @Override
     public void removeLastNodeFromPath() {
-        ((LinkedList)path).removeLast();
+        ((LinkedList) path).removeLast();
     }
 
     @Override

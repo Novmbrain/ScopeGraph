@@ -5,17 +5,15 @@ import model.scope.ScopeGraph;
 import org.junit.Test;
 
 /**
-
  * @author Wenjie FU
  * @create 2021-07-12 11:18
- *
  */
 public class Test1ScopeGraphCreateAndResolve {
     /**
      * Test purpose: Find Declaration X1 from Reference X4
      */
     @Test
-    public void Test0(){
+    public void Test0() {
 
         ScopeGraph scopeGraph = ScopeGraphCreater.ScopeGraphFirgure2();
 
@@ -31,7 +29,7 @@ public class Test1ScopeGraphCreateAndResolve {
      * Test purpose: Find Declaration f3 from Reference f6. Test if the algorithm recurses correctly
      */
     @Test
-    public void Test1(){
+    public void Test1() {
         ScopeGraph scopeGraph = ScopeGraphCreater.ScopeGrapFirgure3Left();
 
         Name referencef6 = scopeGraph.getName("f6");
@@ -45,7 +43,7 @@ public class Test1ScopeGraphCreateAndResolve {
      * Test purpose: Find Declaration n4 and n1 from Reference n7. Test whether the algorithm can find multiple possible paths
      */
     @Test
-    public void Test2(){
+    public void Test2() {
         ScopeGraph scopeGraph = ScopeGraphCreater.ScopeGrapFirgure3Left();
 
         Name referencen7 = scopeGraph.getName("n7");
@@ -83,6 +81,7 @@ public class Test1ScopeGraphCreateAndResolve {
         System.out.println(scopeGraph.checkReference(testName));
 
     }
+
     /**
      * Test purpose: Find Declaration A1 from ImportModule A5.
      */
@@ -100,7 +99,6 @@ public class Test1ScopeGraphCreateAndResolve {
 
 
     /**
-
      * Test purpose: Find Reference A5 from Declaration A1 and A4. Test when the reference corresponding multiple declaration
      * Test Result:
      */

@@ -39,7 +39,7 @@ public class DeclarationEdge extends Edge{
     @Override
     public void selfCopy(HashMap<String, Name> newNameMap, HashMap<Integer, Scope> newScopeMap, Scope scope, Scope newScope) {
 
-            Name newName  = newScope.constructDeclaration(end.getVariableName(), end.getVariableId());
+            Name newName  = newScope.constructDeclaration(end.getVariableName() + "", end.getVariableId() + COPY_ADD_NUMBER);
 
             if (newNameMap.containsKey(newName.toString())) {
                 return;

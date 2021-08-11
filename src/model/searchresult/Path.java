@@ -7,12 +7,13 @@ import java.util.List;
  * @create 2021-07-19 10:51
  */
 public interface Path<E> {
-    public List<E> getPath();
 
-    public void addNodeToPath(E node);
+     List<E> getPath();
 
-    public void removeLastNodeFromPath();
+     void addNodeToPath(E node);
 
-    public E getLastNode();
+     void removeLastNodeFromPath();
+
+     E getLastNode();
 
 }

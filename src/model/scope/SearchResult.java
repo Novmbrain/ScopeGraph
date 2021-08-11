@@ -19,7 +19,7 @@ public class SearchResult {
         allPathImpl = new ArrayList<>();
     }
 
-    public void addCurrentPath(){
+    public void addCurrentPath() {
         allPathImpl.add(new PathImpl<Node>(curPathImpl.getPath()));
     }
 
@@ -35,7 +35,7 @@ public class SearchResult {
         curPathImpl.addNodeToPath(node);
     }
 
-    public void removeLastNodeFromCurrentPath(){
+    public void removeLastNodeFromCurrentPath() {
         curPathImpl.removeLastNodeFromPath();
     }
 

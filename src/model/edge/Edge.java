@@ -13,8 +13,12 @@ import java.util.HashMap;
  */
 public abstract class Edge {
 
+    //Use copyAddNumber to add to the id of the replicated Node to distinguish the old Node from the new Node
+    public static final int COPY_ADD_NUMBER = 100;
+
     public Edge() {
     }
+
 
 
     public abstract Node getEnd();

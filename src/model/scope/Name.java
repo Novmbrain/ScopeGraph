@@ -9,7 +9,7 @@ import java.util.Objects;
  * @author Wenjie FU
  * @create 2021-06-30 14:19
  */
-public class Name extends Node{
+public class Name extends Node {
 
     private String variableName;
     private int variableId;
@@ -39,10 +39,20 @@ public class Name extends Node{
         edges.add(edge);
     }
 
-    protected Node getReferenceScope(){
+    protected Node getReferenceScope() {
         Edge referenceEdge = this.getReferenceEdge();
-        if(referenceEdge !=  null){
+        if (referenceEdge != null) {
             return referenceEdge.getEnd();
+        }
+
+        return null;
+    }
+
+    public Edge getReferenceEdge() {
+        for (Edge edge : edges) {
+            if (edge.isReferenceEdge()) {
+                return edge;
+            }
         }
 
         return null;
@@ -75,13 +85,5 @@ public class Name extends Node{
         return Objects.hash(variableName);
     }
 
-    public Edge getReferenceEdge() {
-        for (Edge edge : edges) {
-            if(edge.isReferenceEdge()){
-                return edge;
-            }
-        }
 
-        return null;
-    }
 }

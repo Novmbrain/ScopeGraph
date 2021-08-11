@@ -39,19 +39,9 @@ public class NominalEdge extends TaggedEdge {
 
     @Override
     public void selfCopy(HashMap<String, Name> newNameMap, HashMap<Integer, Scope> newScopeMap, Scope scope, Scope newScope) {
-        //        for (NominalEdge nominalEdge : nominalEdges) {
-//            Name name = nominalEdge.getEnd();
-//
-//            Name newName = newScope.constructNominalEdge(name.getVariableName(), name.getVariableId());
-//
-//            if (newNameMap.containsValue(newName)) {
-//                continue;
-//            }
-//
-//            newNameMap.put(newName.toString(), newName);
-//        }
 
-        Name newName = newScope.constructNominalEdge(end.getVariableName(), end.getVariableId());
+
+        Name newName = newScope.constructNominalEdge(end.getVariableName(), end.getVariableId() + COPY_ADD_NUMBER);
         if (newNameMap.containsValue(newName)) {
             return;
         }

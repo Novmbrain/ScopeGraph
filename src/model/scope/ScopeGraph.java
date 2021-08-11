@@ -58,7 +58,7 @@ public class ScopeGraph {
      * @param scopeId
      * @param variableName
      * @param variableId
-     * @return
+     * @return Name
      */
     public Name makeDeclaration(int scopeId, String variableName, int variableId) {
 //        if (outOfScopeId(scopeId)) return null;
@@ -86,7 +86,7 @@ public class ScopeGraph {
      * @param scopeId
      * @param variableName
      * @param variableId
-     * @return
+     * @return Name
      */
     public Name makeNominalEdge(int scopeId, String variableName, int variableId) {
 
@@ -103,6 +103,7 @@ public class ScopeGraph {
      * @param variableName
      * @param variableId
      * @param associationScopeId
+     * @return name
      */
     public Name makeAssociation(int declarationScopeId, String variableName, int variableId, int associationScopeId) {
 
@@ -121,10 +122,9 @@ public class ScopeGraph {
      * @param scopeId
      * @param variableName
      * @param variableId
-     * @return
+     * @return name
      */
     public Name makeReference(int scopeId, String variableName, int variableId) {
-//        if (outOfScopeId(scopeId)) return null;
 
         Scope scope = scopeMap.get(scopeId);
 
@@ -152,6 +152,12 @@ public class ScopeGraph {
 
     }
 
+    /**
+     * Passing in a reference to find the path from the reference to its corresponding definiton in the Scope Graph
+     *
+     * @param reference
+     * @return
+     */
     public SearchResult checkReference(Name reference) {
 
         SearchResult searchResult = new SearchResult();
@@ -167,6 +173,12 @@ public class ScopeGraph {
         return searchResult;
     }
 
+    /**
+     * Passing in a importModule to find the path from the importModule to its corresponding definiton in the Scope Graph
+     *
+     * @param module
+     * @return
+     */
     public SearchResult checkImportModule(Name module) {
 
         SearchResult searchResult = new SearchResult();
@@ -198,7 +210,11 @@ public class ScopeGraph {
         return scopeMap;
     }
 
-
+    /**
+     * Create a new Scope Graph that does not share data with the original Scope Graph
+     *
+     * @return
+     */
     public ScopeGraph selfCopy() {
         HashMap<String, Name> newNameMap = new HashMap<>();
         HashMap<Integer, Scope> newScopeMap = new HashMap<>();
@@ -211,66 +227,6 @@ public class ScopeGraph {
         return new ScopeGraph(newNameMap, newScopeMap);
 
     }
-
-//    public ScopeGraph fuse(ScopeGraph scopeGraph){
-//        ScopeGraph copyScopeGraph1 = this.selfCopy();
-//        ScopeGraph copyScopeGraph2 = scopeGraph.selfCopy();
-//
-//        //use this variable to count how many scope have the same name
-//        int count = 0;
-//        Scope fuseScope1 = null;
-//        Scope fuseScope2 = null;
-//
-//        for (Scope scope1 : copyScopeGraph1.getScopeMap().values()) {
-//            for (Scope scope2 : copyScopeGraph2.getScopeMap().values()) {
-//                if(scope1.equals(scope2)){
-//                    count++;
-//                    fuseScope1 = scope1;
-//                    fuseScope2 = scope2;
-//                }
-//            }
-//        }
-//
-//        if (count > 1) {
-//            System.out.println("there are multiple scope which are possible to fuse");
-//            return null;
-//        } else if (count <= 0) {
-//            System.out.println("no same scope, can't fuse");
-//            return null;
-//        } else {
-//
-//            HashMap<String, Name> copyNameMap1 = copyScopeGraph1.getNameMap();
-//            HashMap<Integer, Scope> copyScopeMap1 = copyScopeGraph1.getScopeMap();
-//
-//            HashMap<String, Name> copyNameMap2 = copyScopeGraph2.getNameMap();
-//            HashMap<Integer, Scope> copyScopeMap2 = copyScopeGraph2.getScopeMap();
-//
-//            if (fuseScope1.getDirectEdge() == null) {//which means that we combine ScopeGraph1 to ScopeGraph2
-//                int parentScopeId = fuseScope2.getDirectEdge().getEnd().getScopeId();
-//
-//                copyScopeMap2.remove(fuseScope2);
-//
-//                copyNameMap2.putAll(copyNameMap1);
-//                copyScopeMap2.putAll(copyScopeMap1);
-//
-//                copyScopeGraph2.makeDirectEdge(fuseScope1.getScopeId(), parentScopeId);
-//                return copyScopeGraph2;
-//
-//            }else{
-//                int parentScopeId = fuseScope1.getDirectEdge().getEnd().getScopeId();
-//
-//                copyScopeMap1.remove(fuseScope1);
-//
-//                copyNameMap1.putAll(copyNameMap2);
-//                copyScopeMap1.putAll(copyScopeMap2);
-//
-//                copyScopeGraph1.makeDirectEdge(fuseScope2.getScopeId(), parentScopeId);
-//                return copyScopeGraph1;
-//            }
-//
-//        }
-//
-//    }
 
 
 }

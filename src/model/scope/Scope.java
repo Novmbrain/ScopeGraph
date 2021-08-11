@@ -1,10 +1,8 @@
 package model.scope;
 
-import com.sun.javafx.css.Declaration;
 import model.edge.*;
 import model.searchresult.PathImpl;
 
-import javax.swing.text.AbstractDocument;
 import java.util.*;
 
 /**
@@ -24,7 +22,7 @@ public class Scope extends Node {
         this.scopeId = scopeId;
     }
 
-    public Name constructDeclaration(String variableName, int variableId){
+    public Name constructDeclaration(String variableName, int variableId) {
         //construct new node
         Name name = new Name(variableName, variableId);
 
@@ -36,11 +34,8 @@ public class Scope extends Node {
         return name;
     }
 
-    /**
-     *
-     * @param parentScope
-     */
-    public void constructDirectEdge(Scope parentScope){
+
+    public void constructDirectEdge(Scope parentScope) {
         //connect this with new scope with DirectEdge(childrenScope -> parentScope)
         DirectEdge directEdge = new DirectEdge(this, parentScope);
         this.addEdge(directEdge);
@@ -66,15 +61,15 @@ public class Scope extends Node {
     public String printDot() {
         StringBuilder stringBuilder = new StringBuilder();
 
-        for(Edge edge : edges){
+        for (Edge edge : edges) {
             stringBuilder.append(edge);
         }
 
         return stringBuilder.toString();
     }
 
-    //搜索结束
-    protected void checkReference(Name reference, SearchResult searchResult){
+
+    protected void checkReference(Name reference, SearchResult searchResult) {
 
         searchResult.addNodeToCurrentPath(this);
 
@@ -98,7 +93,7 @@ public class Scope extends Node {
         //search all import module in scope
         for (Edge edge : edges) {
 
-            if(edge.isNominalEdge()){
+            if (edge.isNominalEdge()) {
 
                 Node importModule = edge.getEnd();
 
@@ -116,12 +111,12 @@ public class Scope extends Node {
                         Name module = (Name) pathImpl.getLastNode();
 
 //                        Scope end = module.getAssociationEdge().getEnd();
-                        if(module.getAssociationEdge() != null){
+                        if (module.getAssociationEdge() != null) {
                             Edge associationEdge = module.getAssociationEdge();
                             searchResult.addNodeToCurrentPath(module);//backtrack2 begin
 
                             Node scope = associationEdge.getEnd();
-                            ((Scope)scope).checkReference(reference, searchResult);
+                            ((Scope) scope).checkReference(reference, searchResult);
 
                             searchResult.removeLastNodeFromCurrentPath();//backtrack2 end
 
@@ -136,10 +131,10 @@ public class Scope extends Node {
 
         //use recursion to search node in parentScope
         for (Edge edge : edges) {
-            if(edge.isDirectEdge()){
+            if (edge.isDirectEdge()) {
                 Node parentScope = edge.getEnd();
                 if (parentScope != null) {
-                    ((Scope)parentScope).checkReference(reference, searchResult);
+                    ((Scope) parentScope).checkReference(reference, searchResult);
                 }
             }
         }
@@ -148,18 +143,19 @@ public class Scope extends Node {
 
     /**
      * For now, it only works: find a declaration and end the search
+     *
      * @param module
      * @param searchResult
      */
-    protected void checkImportModule(Node module, SearchResult searchResult){
+    protected void checkImportModule(Node module, SearchResult searchResult) {
         searchResult.addNodeToCurrentPath(this);
 
         for (Edge edge : edges) {
-            if(edge.isDeclarationEdge()){
+            if (edge.isDeclarationEdge()) {
                 Node declaration = edge.getEnd();
                 //first check this declaration is a module
                 if (declaration.haveAssociationEdge()) {
-                    if(module.equals(declaration)){
+                    if (module.equals(declaration)) {
                         searchResult.addNodeToCurrentPath(declaration);
                         searchResult.addCurrentPath();
                         searchResult.removeLastNodeFromCurrentPath();
@@ -171,16 +167,14 @@ public class Scope extends Node {
         for (Edge edge : edges) {
             if (edge.isDirectEdge()) {
                 Node parentScope = edge.getEnd();
-                ((Scope)parentScope).checkImportModule(module, searchResult);
+                ((Scope) parentScope).checkImportModule(module, searchResult);
             }
         }
 
     }
 
 
-
-
-    public Scope selfCopy(HashMap<String, Name> newNameMap, HashMap<Integer, Scope> newScopeMap){
+    public Scope selfCopy(HashMap<String, Name> newNameMap, HashMap<Integer, Scope> newScopeMap) {
         if (newScopeMap.containsValue(new Scope(scopeId))) {
             return newScopeMap.get(scopeId);
         }
@@ -195,8 +189,6 @@ public class Scope extends Node {
 
         return newScope;
     }
-
-
 
 
     public int getScopeId() {

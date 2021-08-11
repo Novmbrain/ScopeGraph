@@ -1,6 +1,5 @@
 package test;
 
-import model.scope.Scope;
 import model.scope.ScopeGraph;
 import org.junit.Test;
 
@@ -31,6 +30,7 @@ import org.junit.Test;
     @Test
     public void test3(){
         ScopeGraph scopeGraph = ScopeGraphCreater.ScopeGraphFirgure3Right();
+        scopeGraph.printDotForScopeGraph();
         ScopeGraph copy = scopeGraph.selfCopy();
         copy.printDotForScopeGraph();
     }

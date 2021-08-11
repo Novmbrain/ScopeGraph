@@ -29,7 +29,7 @@ public class ReferenceEdge extends Edge{
     @Override
     public void selfCopy(HashMap<String, Name> newNameMap, HashMap<Integer, Scope> newScopeMap, Scope scope, Scope newScope) {
 
-            Name newName = new Name(start.getVariableName(), start.getVariableId());
+            Name newName = new Name(start.getVariableName(), start.getVariableId() + COPY_ADD_NUMBER);
 
             if (newNameMap.containsKey(newName)) {
                 return;

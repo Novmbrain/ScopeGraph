@@ -15,9 +15,10 @@ public class ScopeGraphCreater {
 
     /**
      * The Scope Graph is Figure2 in the article
+     *
      * @return
      */
-    public static ScopeGraph ScopeGraphFirgure2(){
+    public static ScopeGraph ScopeGraphFirgure2() {
         ScopeGraph scopeGraph = new ScopeGraph();
         scopeGraph.generateScope(1);
 
@@ -33,9 +34,10 @@ public class ScopeGraphCreater {
 
     /**
      * The Scope Graph is on the left of Figure3 in the article
+     *
      * @return
      */
-    public static ScopeGraph ScopeGrapFirgure3Left(){
+    public static ScopeGraph ScopeGrapFirgure3Left() {
         ScopeGraph scopeGraph = new ScopeGraph();
         scopeGraph.generateScope(2);
 
@@ -53,9 +55,10 @@ public class ScopeGraphCreater {
 
     /**
      * The Scope Graph is on the right of Figure3 in the article
+     *
      * @return
      */
-    public static ScopeGraph ScopeGraphFirgure3Right(){
+    public static ScopeGraph ScopeGraphFirgure3Right() {
         ScopeGraph scopeGraph = new ScopeGraph();
         scopeGraph.generateScope(3);
 
@@ -77,9 +80,10 @@ public class ScopeGraphCreater {
 
     /**
      * This Scope Graph is modifed from ScopeGraphFIrgure3Right. I replace module B4 with module A4 to let the reference moduleA5 have two declaration(A4, A1)
+     *
      * @return
      */
-    public  static ScopeGraph createScopeGraph4(){
+    public static ScopeGraph createScopeGraph4() {
         ScopeGraph scopeGraph = new ScopeGraph();
         scopeGraph.generateScope(3);
 
