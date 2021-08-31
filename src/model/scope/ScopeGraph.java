@@ -5,8 +5,28 @@ import model.edge.Edge;
 import java.util.HashMap;
 
 /**
+ * The ScopeGraph class provides six methods to quickly build a Scope Graph
+ *
+ * To build a Scope Graph, first use the generateScope() method to generate all scopes. You can specify the number of
+ * scopes directly, and the Scope ID of the Scope is automatically incrementing. Or generate a Scope with the contents
+ * of the input array as its serial number.
+ *
+ * Then concatenates each Scope together using the method used to build the Edge
+ *
+ * Example:
+ * <pre>
+ *     {@code
+ *      ScopeGraph scopeGraph = new ScopeGraph();
+ *      scopeGraph.generateScope(1);
+ *
+ *      Name referencex4 = scopeGraph.makeReference(1, "x", 4);
+ *      scopeGraph.makeReference(1, "x", 8);
+ *
+ *      scopeGraph.makeDeclaration(1, "x", 1);
+ *      scopeGraph.makeDeclaration(1, "y", 3);
+ *     }
+ * </pre>
  * @author Wenjie FU
- * @create 2021-06-30 14:19
  */
 public class ScopeGraph {
 
@@ -34,9 +54,9 @@ public class ScopeGraph {
 
     /**
      * Generate n scopes, n == amount. ScopeId will increment on the basis of existing ScopeId. Scopeid starts at 1
-     * <p>
+     *
      * Example: Generate a Scope Graph with five scopes
-     * <p>
+     *
      * <pre>
      *     {@code
      *      ScopeGraph scopeGraph = new ScopeGraph();
@@ -60,9 +80,9 @@ public class ScopeGraph {
 
     /**
      * Generate some Scopes using the input array element as a scopeId
-     * <p>
+     *
      * Example: Use 1, 2, and 3 as scopeId to generate three Scope graphs
-     * <p>
+     *
      * <pre>
      *      {@code
      *       ScopeGraph scopeGraph = new ScopeGraph();
@@ -260,7 +280,7 @@ public class ScopeGraph {
      *     }
      *
      * </pre>
-     * @param reference
+     * @param reference the Reference that will be resolved
      * @return a SearchResult which stored all of the possible paths.
      */
     public SearchResult checkReference(Name reference) {
@@ -288,7 +308,7 @@ public class ScopeGraph {
      *     }
      *
      * </pre>
-     * @param module
+     * @param module the Module that will be resolved
      * @return  a SearchResult which stored all of the possible paths.
      */
     public SearchResult checkImportModule(Name module) {
@@ -316,7 +336,7 @@ public class ScopeGraph {
      *      Name moduleA5 = scopeGraph.getName("A5");
      *     }
      * </pre>
-     * @param name
+     * @param name the Name that you want
      * @return the Name or Null
      */
     public Name getName(String name) {
@@ -325,14 +345,6 @@ public class ScopeGraph {
         }
 
         return null;
-    }
-
-    public HashMap<String, Name> getNameMap() {
-        return nameMap;
-    }
-
-    public HashMap<Integer, Scope> getScopeMap() {
-        return scopeMap;
     }
 
     /**
@@ -360,5 +372,12 @@ public class ScopeGraph {
 
     }
 
+    public HashMap<String, Name> getNameMap() {
+        return nameMap;
+    }
+
+    public HashMap<Integer, Scope> getScopeMap() {
+        return scopeMap;
+    }
 
 }
